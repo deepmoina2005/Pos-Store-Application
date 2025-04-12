@@ -33,7 +33,6 @@ import Settings from "./pages/Settings";
 import Reports from "./pages/Reports";
 
 // Pages - Tables & Forms
-import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 
 // Pages - Inventory
@@ -59,9 +58,6 @@ import AllCategories from "./pages/Categories/AllCategories";
 // Pages - Units
 import AddUnits from "./pages/Units/AddUnits";
 import AllUnits from "./pages/Units/AllUnits";
-
-// Pages - Invoice
-import Invoice from "./pages/Invoice";
 
 // Pages - Misc
 import NotFound from "./pages/OtherPage/NotFound";
@@ -92,7 +88,6 @@ export default function App() {
 
           {/* Tables and Forms */}
           <Route path="/form-elements" element={<FormElements />} />
-          <Route path="/basic-tables" element={<BasicTables />} />
 
           {/* Inventory */}
           <Route path="/add-product" element={<AddProducts />} />
@@ -120,7 +115,6 @@ export default function App() {
 
           {/* Reports & Invoice */}
           <Route path="/reports" element={<Reports />} />
-          <Route path="/invoice" element={<Invoice />} />
         </Route>
 
         {/* Auth route */}
