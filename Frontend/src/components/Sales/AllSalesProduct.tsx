@@ -99,7 +99,6 @@ const AllSalesProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const productsPerPage = 8;
 
-  // Filter products based on search and category
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name
       .toLowerCase()
@@ -125,12 +124,12 @@ const AllSalesProduct = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
-    setCurrentPage(1); // Reset to the first page when search text changes
+    setCurrentPage(1);
   };
 
   const handleSelectChange = (value: string) => {
     setSelectedCategory(value);
-    setCurrentPage(1); // Reset to the first page when category changes
+    setCurrentPage(1);
   };
 
   return (
@@ -162,7 +161,7 @@ const AllSalesProduct = () => {
           <Select
             options={categoryOptions}
             placeholder="Select Category"
-            onChange={(e:any) => handleSelectChange(e.target.value)}
+            onChange={handleSelectChange}
             className="dark:bg-dark-100"
           />
         </div>
