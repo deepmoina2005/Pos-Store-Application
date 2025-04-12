@@ -12,7 +12,6 @@ const AddNewSuppliers = () => {
   const [supplierName, setSupplierName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [openingBalance, setOpeningBalance] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = async () => {
@@ -21,7 +20,6 @@ const AddNewSuppliers = () => {
         supplier_name: supplierName,
         phone,
         address,
-        opening: openingBalance,
         description,
       };
 
@@ -32,7 +30,6 @@ const AddNewSuppliers = () => {
         setSupplierName("");
         setPhone("");
         setAddress("");
-        setOpeningBalance("");
         setDescription("");
       } else {
         toast.error(data.message || "Failed to add supplier.");
@@ -72,16 +69,6 @@ const AddNewSuppliers = () => {
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <Label>Opening Balance</Label>
-          <Input
-            placeholder="Enter Opening Balance"
-            type="number"
-            value={openingBalance}
-            onChange={(e) => setOpeningBalance(e.target.value)}
           />
         </div>
 

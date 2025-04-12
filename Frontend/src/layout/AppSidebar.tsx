@@ -79,7 +79,6 @@ const navItems: NavItem[] = [
   },
   { icon: <Calendar />, name: "Calendar", path: "/calendar" },
   { icon: <NotebookPen />, name: "Reports", path: "/reports" },
-  { icon: <ScrollText />, name: "Invoice", path: "/invoice" },
   { icon: <Settings />, name: "Settings", path: "/settings" },
   { icon: <CircleUserRound />, name: "Profile", path: "/profile" },
   { icon: <LogOut />, name: "Logout", path: "/signin" },

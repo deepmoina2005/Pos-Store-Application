@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Eye, Trash2, Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import Button from "../ui/button/Button";
 import { useNavigate } from "react-router";
 
@@ -18,6 +18,7 @@ interface Supplier {
   opening: string;
   created_at: string;
   updated_at: string;
+  isActive: boolean;
 }
 
 const sampleSuppliers: Supplier[] = [
@@ -29,6 +30,7 @@ const sampleSuppliers: Supplier[] = [
     opening: "5000",
     created_at: "2025-04-01T10:00:00Z",
     updated_at: "2025-04-02T10:00:00Z",
+    isActive: true,
   },
   {
     id: 2,
@@ -38,171 +40,189 @@ const sampleSuppliers: Supplier[] = [
     opening: "2500",
     created_at: "2025-04-03T10:00:00Z",
     updated_at: "2025-04-04T10:00:00Z",
+    isActive: false,
   },
   {
     id: 3,
     supplier_name: "Supplier C",
-    phone: "5551112233",
+    phone: "1122334455",
     address: "789 Pine St, City C",
     opening: "3200",
     created_at: "2025-04-05T10:00:00Z",
     updated_at: "2025-04-06T10:00:00Z",
+    isActive: true,
   },
   {
     id: 4,
     supplier_name: "Supplier D",
-    phone: "6662223344",
-    address: "321 Cedar Ave, City D",
+    phone: "5566778899",
+    address: "101 Maple Ave, City D",
     opening: "4100",
     created_at: "2025-04-07T10:00:00Z",
     updated_at: "2025-04-08T10:00:00Z",
+    isActive: true,
   },
   {
     id: 5,
     supplier_name: "Supplier E",
-    phone: "7773334455",
-    address: "654 Birch Ln, City E",
+    phone: "9988776655",
+    address: "202 Elm St, City E",
     opening: "1500",
     created_at: "2025-04-09T10:00:00Z",
     updated_at: "2025-04-10T10:00:00Z",
+    isActive: false,
   },
   {
     id: 6,
     supplier_name: "Supplier F",
-    phone: "8884445566",
-    address: "987 Maple Blvd, City F",
-    opening: "2900",
+    phone: "4433221100",
+    address: "303 Birch Rd, City F",
+    opening: "2700",
     created_at: "2025-04-11T10:00:00Z",
     updated_at: "2025-04-12T10:00:00Z",
+    isActive: true,
   },
   {
     id: 7,
     supplier_name: "Supplier G",
-    phone: "9995556677",
-    address: "432 Aspen Way, City G",
-    opening: "3300",
+    phone: "1231231234",
+    address: "404 Cedar Ln, City G",
+    opening: "3600",
     created_at: "2025-04-13T10:00:00Z",
     updated_at: "2025-04-14T10:00:00Z",
+    isActive: false,
   },
   {
     id: 8,
     supplier_name: "Supplier H",
-    phone: "1116667788",
-    address: "123 Elm Dr, City H",
-    opening: "2750",
+    phone: "3213214321",
+    address: "505 Walnut St, City H",
+    opening: "4800",
     created_at: "2025-04-15T10:00:00Z",
     updated_at: "2025-04-16T10:00:00Z",
+    isActive: true,
   },
   {
     id: 9,
     supplier_name: "Supplier I",
-    phone: "2227778899",
-    address: "456 Walnut St, City I",
-    opening: "3600",
+    phone: "5551112222",
+    address: "606 Willow Rd, City I",
+    opening: "1900",
     created_at: "2025-04-17T10:00:00Z",
     updated_at: "2025-04-18T10:00:00Z",
+    isActive: false,
   },
   {
     id: 10,
     supplier_name: "Supplier J",
-    phone: "3338889900",
-    address: "789 Chestnut Ave, City J",
-    opening: "4200",
+    phone: "6667778888",
+    address: "707 Ash St, City J",
+    opening: "3300",
     created_at: "2025-04-19T10:00:00Z",
     updated_at: "2025-04-20T10:00:00Z",
+    isActive: true,
   },
   {
     id: 11,
     supplier_name: "Supplier K",
-    phone: "4449990011",
-    address: "147 Palm St, City K",
-    opening: "2700",
+    phone: "2223334444",
+    address: "808 Beech Ave, City K",
+    opening: "2950",
     created_at: "2025-04-21T10:00:00Z",
     updated_at: "2025-04-22T10:00:00Z",
+    isActive: true,
   },
   {
     id: 12,
     supplier_name: "Supplier L",
-    phone: "5550001122",
-    address: "258 Magnolia Rd, City L",
-    opening: "1900",
+    phone: "1112223333",
+    address: "909 Spruce St, City L",
+    opening: "4200",
     created_at: "2025-04-23T10:00:00Z",
     updated_at: "2025-04-24T10:00:00Z",
+    isActive: false,
   },
   {
     id: 13,
     supplier_name: "Supplier M",
-    phone: "6661112233",
-    address: "369 Redwood Blvd, City M",
-    opening: "3400",
+    phone: "8889990000",
+    address: "1010 Chestnut Rd, City M",
+    opening: "3800",
     created_at: "2025-04-25T10:00:00Z",
     updated_at: "2025-04-26T10:00:00Z",
+    isActive: true,
   },
   {
     id: 14,
     supplier_name: "Supplier N",
-    phone: "7772223344",
-    address: "471 Fir Ln, City N",
-    opening: "2200",
+    phone: "3334445555",
+    address: "1111 Poplar Ln, City N",
+    opening: "1700",
     created_at: "2025-04-27T10:00:00Z",
     updated_at: "2025-04-28T10:00:00Z",
+    isActive: true,
   },
   {
     id: 15,
     supplier_name: "Supplier O",
-    phone: "8883334455",
-    address: "582 Spruce Ave, City O",
-    opening: "4000",
+    phone: "4445556666",
+    address: "1212 Sycamore Ave, City O",
+    opening: "2600",
     created_at: "2025-04-29T10:00:00Z",
     updated_at: "2025-04-30T10:00:00Z",
+    isActive: false,
   },
   {
     id: 16,
     supplier_name: "Supplier P",
-    phone: "9994445566",
-    address: "693 Willow Blvd, City P",
+    phone: "7778889999",
+    address: "1313 Magnolia St, City P",
     opening: "3100",
     created_at: "2025-05-01T10:00:00Z",
     updated_at: "2025-05-02T10:00:00Z",
+    isActive: true,
   },
   {
     id: 17,
     supplier_name: "Supplier Q",
-    phone: "1115556677",
-    address: "714 Poplar St, City Q",
-    opening: "3700",
+    phone: "9990001111",
+    address: "1414 Dogwood Rd, City Q",
+    opening: "3900",
     created_at: "2025-05-03T10:00:00Z",
     updated_at: "2025-05-04T10:00:00Z",
+    isActive: true,
   },
   {
     id: 18,
     supplier_name: "Supplier R",
-    phone: "2226667788",
-    address: "825 Sequoia Rd, City R",
-    opening: "2950",
+    phone: "0001112222",
+    address: "1515 Fir St, City R",
+    opening: "2000",
     created_at: "2025-05-05T10:00:00Z",
     updated_at: "2025-05-06T10:00:00Z",
+    isActive: false,
   },
   {
     id: 19,
     supplier_name: "Supplier S",
-    phone: "3337778899",
-    address: "936 Acacia Blvd, City S",
-    opening: "2400",
+    phone: "1113335555",
+    address: "1616 Alder Ln, City S",
+    opening: "4400",
     created_at: "2025-05-07T10:00:00Z",
     updated_at: "2025-05-08T10:00:00Z",
+    isActive: true,
   },
   {
     id: 20,
     supplier_name: "Supplier T",
-    phone: "4448889900",
-    address: "1047 Dogwood Ln, City T",
-    opening: "2800",
+    phone: "2224446666",
+    address: "1717 Redwood Ave, City T",
+    opening: "2300",
     created_at: "2025-05-09T10:00:00Z",
     updated_at: "2025-05-10T10:00:00Z",
+    isActive: false,
   },
 ];
-
 
 const AllHistorySuppliers = () => {
   const [suppliers, setSuppliers] = useState<Supplier[]>(sampleSuppliers);
@@ -210,8 +230,8 @@ const AllHistorySuppliers = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const navigate = useNavigate();
-
   const itemsPerPage = 10;
+
   const filteredSuppliers = suppliers.filter((supplier) =>
     supplier.supplier_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -223,16 +243,36 @@ const AllHistorySuppliers = () => {
     currentPage * itemsPerPage
   );
 
-  const handleView = (id: number) => {
-    console.log(`Viewing supplier with ID: ${id}`);
-  };
-
-  const handleEdit = (id: number) => {
-    navigate(`/edit-supplier/${id}`);
-  };
+  const ToggleSwitch = ({
+    checked,
+    onChange,
+  }: {
+    checked: boolean;
+    onChange: () => void;
+  }) => (
+    <label className="relative inline-flex cursor-pointer items-center">
+      <input
+        type="checkbox"
+        className="sr-only peer"
+        checked={checked}
+        onChange={onChange}
+      />
+      <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors duration-300 ease-in-out after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:duration-300 peer-checked:after:translate-x-5"></div>
+    </label>
+  );
 
   const handleDelete = (id: number) => {
     setSuppliers((prev) => prev.filter((s) => s.id !== id));
+  };
+
+  const handleToggleStatus = (id: number) => {
+    setSuppliers((prev) =>
+      prev.map((supplier) =>
+        supplier.id === id
+          ? { ...supplier, isActive: !supplier.isActive }
+          : supplier
+      )
+    );
   };
 
   return (
@@ -258,44 +298,56 @@ const AllHistorySuppliers = () => {
         <Table>
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
             <TableRow>
-              {["Name", "Phone", "Address", "Opening Balance", "Created At", "Updated At", "Actions"].map(
-                (heading) => (
-                  <TableCell
-                    key={heading}
-                    isHeader
-                    className="px-5 py-3 font-medium text-gray-500 text-start text-xs uppercase dark:text-gray-400"
-                  >
-                    {heading}
-                  </TableCell>
-                )
-              )}
+              {[
+                "Name",
+                "Phone",
+                "Address",
+                "Created At",
+                "Updated At",
+                "Status",
+                "Actions",
+              ].map((heading) => (
+                <TableCell
+                  key={heading}
+                  isHeader
+                  className="px-5 py-3 font-medium text-gray-500 text-start text-xs uppercase dark:text-gray-400"
+                >
+                  {heading}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHeader>
 
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
             {paginatedSuppliers.map((supplier) => (
               <TableRow key={supplier.id}>
-                <TableCell className="px-5 py-4 text-start">{supplier.supplier_name}</TableCell>
-                <TableCell className="px-5 py-4 text-start">{supplier.phone}</TableCell>
-                <TableCell className="px-5 py-4 text-start">{supplier.address}</TableCell>
-                <TableCell className="px-5 py-4 text-start">${supplier.opening}</TableCell>
-                <TableCell className="px-5 py-4 text-start text-xs text-gray-500">
-                  {new Date(supplier.created_at).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="px-5 py-4 text-start text-xs text-gray-500">
-                  {new Date(supplier.updated_at).toLocaleDateString()}
+                <TableCell className="px-5 py-4 text-start">
+                  {supplier.supplier_name}
                 </TableCell>
                 <TableCell className="px-5 py-4 text-start">
+                  {supplier.phone}
+                </TableCell>
+                <TableCell className="px-5 py-4 text-start">
+                  {supplier.address}
+                </TableCell>
+                <TableCell className="px-5 py-4 text-xs text-gray-500">
+                  {new Date(supplier.created_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="px-5 py-4 text-xs text-gray-500">
+                  {new Date(supplier.updated_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="px-5 py-4">
+                  <ToggleSwitch
+                    checked={supplier.isActive}
+                    onChange={() => handleToggleStatus(supplier.id)}
+                  />
+                </TableCell>
+                <TableCell className="px-5 py-4">
                   <div className="flex gap-3">
                     <button
-                      onClick={() => handleView(supplier.id)}
+                      onClick={() => navigate(`/edit-category/`)}
                       className="text-blue-500 hover:text-blue-700"
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleEdit(supplier.id)}
-                      className="text-green-500 hover:text-green-700"
+                      title="Edit"
                     >
                       <Pencil size={18} />
                     </button>
