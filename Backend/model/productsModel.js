@@ -1,0 +1,15 @@
+export const productModel = `
+CREATE TABLE IF NOT EXISTS products (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT,
+  selling_price REAL NOT NULL CHECK(selling_price >= 0),
+  cost_price REAL CHECK(cost_price >= 0),
+  stock INTEGER NOT NULL CHECK(stock >= 0) DEFAULT 0,
+  unit_of_measure TEXT NOT NULL DEFAULT 'kg',
+  brand TEXT,
+  category_id INTEGER,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+);`
