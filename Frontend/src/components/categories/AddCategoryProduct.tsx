@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { addCategoryAction } from "../../redux/slices/addCategorySlice";
@@ -7,9 +7,11 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import TextArea from "../form/input/TextArea";
 import Button from "../ui/button/Button";
+import { useNavigate } from "react-router-dom";
+
 interface CategoryData {
   name: string;
-  description: string; // Assuming it's a string, but you might want a Date type depending on your use case
+  description: string;
 }
 
 const AddCategoryProduct = () => {
@@ -17,21 +19,30 @@ const AddCategoryProduct = () => {
   const [description, setDescription] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading } = useSelector((state: RootState) => state.addCategory);
+  const navigate = useNavigate();
+
+  const { isLoading, isSuccess } = useSelector((state: RootState) => state.addCategory);
 
   const handleSubmit = () => {
     const newCategory: CategoryData = {
       name: categoryName,
       description: description,
     };
-  
+
     dispatch(addCategoryAction(newCategory));
-  
+
     // Reset form fields
     setCategoryName("");
-    setDescription(""); // You might remove this if not used
+    setDescription("");
   };
-  
+
+  // Navigate on successful add
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/all-categories");
+    }
+  }, [isSuccess, navigate]);
+
   return (
     <ComponentCard title="Add New Category">
       <div className="space-y-6">
