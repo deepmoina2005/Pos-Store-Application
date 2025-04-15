@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
@@ -11,24 +11,12 @@ import axios from "axios"; // ✅ Added this
 const AddProduct = () => {
   const [productImage, setProductImage] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
-  const [productCode, setProductCode] = useState("");
   const [productPrice, setProductPrice] = useState("");
+  const [description,setDescription] = useState("");
   const [productDiscountPrice, setProductDiscountPrice] = useState("");
   const [brand, setBrand] = useState("");
-  const [productColor, setProductColor] = useState("");
   const [category, setCategory] = useState("");
-  const [tags, setTags] = useState<string[]>(["fresh"]);
-  const [productType, setProductType] = useState("");
-  const [barcode, setBarcode] = useState("");
-  const [barcodeSymbol, setBarcodeSymbol] = useState("");
-  const [pricePerUnit, setPricePerUnit] = useState<number>(0);
   const [unit, setUnit] = useState("");
-  const [quantity, setQuantity] = useState<number>(1);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  useEffect(() => {
-    setTotalPrice(pricePerUnit * quantity);
-  }, [pricePerUnit, quantity]);
 
   const onDrop = (acceptedFiles: File[]) => {
     setProductImage(acceptedFiles);
@@ -57,30 +45,21 @@ const AddProduct = () => {
     { value: "pack", label: "Pack" },
   ];
 
-  const productTypes = [
-    { value: "perishable", label: "Perishable" },
-    { value: "non-perishable", label: "Non-Perishable" },
-    { value: "frozen", label: "Frozen" },
-  ];
-
   const handleSubmit = async () => {
+    // Basic validation
+    if (!productName || !productPrice || !category || !unit || !productImage.length) {
+      toast.error("Please fill all the fields and upload at least one image.");
+      return;
+    }
+
     try {
       const newProduct = {
         productName,
-        productCode,
         brand,
         category,
-        tags,
-        productType,
-        barcode,
-        barcodeSymbol,
-        pricePerUnit,
         unit,
-        quantity,
-        totalPrice,
         productPrice,
         productDiscountPrice,
-        productColor,
       };
 
       const formData = new FormData();
@@ -93,20 +72,12 @@ const AddProduct = () => {
         toast.success(data.message);
         // Reset form
         setProductName("");
-        setProductCode("");
         setBrand("");
         setCategory("");
-        setTags(["fresh"]);
-        setProductType("");
-        setBarcode("");
-        setBarcodeSymbol("");
-        setPricePerUnit(0);
         setUnit("");
-        setQuantity(1);
         setProductImage([]);
         setProductPrice("");
         setProductDiscountPrice("");
-        setProductColor("");
       } else {
         toast.error(data.message);
       }
@@ -129,42 +100,12 @@ const AddProduct = () => {
         </div>
 
         <div>
-          <Label>Barcode</Label>
-          <Input
-            placeholder="Enter Barcode"
-            type="text"
-            value={barcode}
-            onChange={(e) => setBarcode(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <Label>Product Code</Label>
-          <Input
-            placeholder="Product Code"
-            type="text"
-            value={productCode}
-            onChange={(e) => setProductCode(e.target.value)}
-          />
-        </div>
-
-        <div>
           <Label>Product Price</Label>
           <Input
             placeholder="Product Price"
             type="number"
             value={productPrice}
             onChange={(e) => setProductPrice(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <Label>Product Color (optional)</Label>
-          <Input
-            placeholder="Product Color"
-            type="text"
-            value={productColor}
-            onChange={(e) => setProductColor(e.target.value)}
           />
         </div>
 
@@ -193,16 +134,7 @@ const AddProduct = () => {
           <Select
             options={categories}
             placeholder="Select Category"
-            onChange={(val:any) => setCategory(val?.value)}
-          />
-        </div>
-
-        <div>
-          <Label>Product Type</Label>
-          <Select
-            options={productTypes}
-            placeholder="Select Type"
-            onChange={(val:any) => setProductType(val?.value)}
+            onChange={(val: any) => setCategory(val?.value)}
           />
         </div>
 
@@ -211,7 +143,7 @@ const AddProduct = () => {
           <Select
             options={unitOptions}
             placeholder="Select Unit"
-            onChange={(val:any) => setUnit(val?.value)}
+            onChange={(val: any) => setUnit(val?.value)}
           />
         </div>
 
@@ -222,10 +154,9 @@ const AddProduct = () => {
             <div
               {...getRootProps()}
               className={`dropzone rounded-xl border-dashed border-gray-300 p-7 lg:p-10
-                ${
-                  isDragActive
-                    ? "border-brand-500 bg-gray-100 dark:bg-gray-800"
-                    : "border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
+                ${isDragActive
+                  ? "border-brand-500 bg-gray-100 dark:bg-gray-800"
+                  : "border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
                 }
               `}
             >

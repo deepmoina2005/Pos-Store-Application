@@ -1,23 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../slices/authSlice";
-import addCategoryReducer from "../slices/category/addCategorySlice";
-import categoryListReducer from "../slices/category/categoryListSlice";
-import updateCatergoryReducer from "../slices/category/updateCategorySlice";
+import addCategoryReducer from "../slices/addCategorySlice";
 import { useDispatch } from "react-redux";
 
-// Create the store with both reducers
+// Create Redux store
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     addCategory: addCategoryReducer,
-    categoryList: categoryListReducer,
-    updateCategoy: updateCatergoryReducer
   },
 });
 
-// TypeScript types for state and dispatch
+// TypeScript types for RootState and AppDispatch
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-// Typed useDispatch hook
+// Typed useDispatch hook for better TypeScript support
 export const useAppDispatch: () => AppDispatch = useDispatch;
