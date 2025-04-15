@@ -1,4 +1,3 @@
-
 import Database from 'better-sqlite3';
 import {catergoryModel} from '../model/categoryModel.js'
 import {purchaseModel} from '../model/purchaseModel.js';

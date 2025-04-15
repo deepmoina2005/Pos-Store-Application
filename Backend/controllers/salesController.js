@@ -1,4 +1,4 @@
-import dbPromise from '../database/db.js';
+import dbPromise from '../config/db.js';
 
 export const createSale = async (req, res) => {
   const db = await dbPromise;

@@ -1,4 +1,4 @@
-import db from '../database/db.js';
+import db from '../config/db.js';
 
 export const createPurchase = (req, res) => {
   const { supplier_id, invoice_number, purchase_date, payment_status, payment_type, items } = req.body;

@@ -1,4 +1,4 @@
-import db from '../database/db.js';
+import db from '../config/db.js';
 
 export const createProduct = (req, res) => {
   const { name, description, selling_price, cost_price, stock, unit_of_measure, brand, category_id } = req.body;

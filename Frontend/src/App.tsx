@@ -30,7 +30,6 @@ import BarChart from "./pages/Charts/BarChart";
 // Pages - Utilities
 import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
-import Reports from "./pages/Reports";
 
 // Pages - Tables & Forms
 import FormElements from "./pages/Forms/FormElements";
@@ -61,6 +60,7 @@ import AllUnits from "./pages/Units/AllUnits";
 
 // Pages - Misc
 import NotFound from "./pages/OtherPage/NotFound";
+import SalesReports from "./pages/Reports/SalesReports";
 
 export default function App() {
   return (
@@ -113,8 +113,8 @@ export default function App() {
           <Route path="/add-unit" element={<AddUnits />} />
           <Route path="/all-units" element={<AllUnits />} />
 
-          {/* Reports & Invoice */}
-          <Route path="/reports" element={<Reports />} />
+          {/* Reports */}
+          <Route path="/sales-reports" element={<SalesReports/>}/>
         </Route>
 
         {/* Auth route */}

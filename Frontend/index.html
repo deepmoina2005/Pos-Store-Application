@@ -66,39 +66,6 @@
   </head>
 
   <body class="bg-white dark:bg-gray-900 text-black dark:text-white">
-    <!-- Custom Glassy Title Bar -->
-    <div
-      id="titlebar"
-      class="fixed top-0 left-0 right-0 bg-gray-800/70 text-white px-4 flex items-center justify-between z-50 select-none drag"
-    >
-      <div class="text-sm font-semibold">My Electron App</div>
-      <div class="flex gap-2 no-drag">
-        <!-- Minimize Button -->
-        <button
-          onclick="window.electronAPI.minimize()"
-          class="hover:bg-gray-700 px-2 rounded"
-          title="Minimize"
-        >
-          — 
-        </button>
-        <!-- Maximize Button -->
-        <button
-          onclick="window.electronAPI.maximize()"
-          class="hover:bg-gray-700 px-2 rounded"
-          title="Maximize"
-        >
-          🗖
-        </button>
-        <!-- Close Button -->
-        <button
-          onclick="window.electronAPI.close()"
-          class="hover:bg-red-600 px-2 rounded"
-          title="Close"
-        >
-          ✕
-        </button>
-      </div>
-    </div>
 
     <!-- Main App Container (React/TSX content mounts here) -->
     <div id="root" class="pt-0 h-full overflow-y-auto">

@@ -5,12 +5,22 @@ import supplier from './routes/supplierRoute.js'
 import unit from './routes/unitRoute.js'
 import category from './routes/catergoryRoutes.js'
 import product from './routes/productRoute.js'
+import cors from "cors";
+import 'dotenv/config'
+import adminRouter from './routes/adminRoute.js'
 
 const app = express();
 app.use(express.json());
 app.get('/',(req,res)=>{
     res.json({msg:"Welcome to MartGuide"});
-})
+});
+
+// Cors 
+const allowedOrigins = ['http://localhost:5173']
+app.use(cors({origin: allowedOrigins, credentials: true}))
+
+// API Endpoints
+app.use('/auth',adminRouter)
 app.use('/sales',sales);
 app.use('/purchases',purchase);
 app.use('/category',category);
