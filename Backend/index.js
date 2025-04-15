@@ -8,9 +8,11 @@ import product from './routes/productRoute.js'
 import cors from "cors";
 import 'dotenv/config'
 import adminRouter from './routes/adminRoute.js'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.get('/',(req,res)=>{
     res.json({msg:"Welcome to MartGuide"});
 });

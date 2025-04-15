@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ComponentCard from "../common/ComponentCard";
@@ -11,7 +11,6 @@ const AddCategoryProduct = () => {
   const [categoryName, setCategoryName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [createdAt, setCreatedAt] = useState<string>("");
-  const [updatedAt, setUpdatedAt] = useState<string>("");
 
   // Handle form submission for adding category product
   const handleSubmit = async () => {
@@ -20,12 +19,11 @@ const AddCategoryProduct = () => {
         categoryName,
         description,
         createdAt,
-        updatedAt,
       };
 
       // API Call to Save Category Product (replace with actual API)
       const { data } = await axios.post(
-        "/api/category-product/add",
+        "http://localhost:3000/category/",
         newCategoryProduct
       );
 
@@ -36,12 +34,11 @@ const AddCategoryProduct = () => {
         setCategoryName("");
         setDescription("");
         setCreatedAt("");
-        setUpdatedAt("");
       } else {
         toast.error(data.message);
       }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || error.message);
+    } catch (error) {
+      console.log(error);
     }
   };
 
