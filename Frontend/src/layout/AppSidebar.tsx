@@ -27,7 +27,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { icon: <LayoutDashboard />, name: "Dashboard", path: "/" },
+  { icon: <LayoutDashboard />, name: "Dashboard", path: "/dashboard" },
   {
     icon: <ChartColumnIncreasing />,
     name: "Sales",
@@ -86,7 +86,7 @@ const navItems: NavItem[] = [
   { icon: <Calendar />, name: "Calendar", path: "/calendar" },
   { icon: <Settings />, name: "Settings", path: "/settings" },
   { icon: <CircleUserRound />, name: "Profile", path: "/profile" },
-  { icon: <LogOut />, name: "Logout", path: "/signin" },
+  { icon: <LogOut />, name: "Logout", path: "/" },
 ];
 
 const AppSidebar: React.FC = () => {

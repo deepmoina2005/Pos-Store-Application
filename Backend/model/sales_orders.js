@@ -8,5 +8,4 @@ CREATE TABLE IF NOT EXISTS sale_items (
   total_price REAL NOT NULL CHECK(total_price >= 0),
   FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id)
-);
-`
+);`

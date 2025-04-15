@@ -69,7 +69,7 @@ export default function App() {
       <Routes>
         {/* App routes with layout */}
         <Route element={<AppLayout />}>
-          <Route index path="/" element={<Home />} />
+          <Route index path="/dashboard" element={<Home />} />
           <Route path="/profile" element={<UserProfiles />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/settings" element={<Settings />} />
@@ -118,7 +118,7 @@ export default function App() {
         </Route>
 
         {/* Auth route */}
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
 
         {/* 404 fallback */}
         <Route path="*" element={<NotFound />} />
