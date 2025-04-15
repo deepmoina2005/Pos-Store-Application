@@ -1,51 +1,34 @@
 import { useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store/store";
+import { addCategoryAction } from "../../redux/slices/addCategorySlice";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
-import Button from "../ui/button/Button";
 import TextArea from "../form/input/TextArea";
+import Button from "../ui/button/Button";
 
 const AddCategoryProduct = () => {
-  const [categoryName, setCategoryName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [createdAt, setCreatedAt] = useState<string>("");
+  const [categoryName, setCategoryName] = useState("");
+  const [description, setDescription] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
 
-  // Handle form submission for adding category product
-  const handleSubmit = async () => {
-    try {
-      const newCategoryProduct = {
-        categoryName,
-        description,
-        createdAt,
-      };
+  const dispatch = useDispatch<AppDispatch>();
+  const { isLoading } = useSelector((state: RootState) => state.addCategory);
 
-      // API Call to Save Category Product (replace with actual API)
-      const { data } = await axios.post(
-        "http://localhost:3000/category/",
-        newCategoryProduct
-      );
+  const handleSubmit = () => {
+    const newCategory = { categoryName, description, createdAt };
+    dispatch(addCategoryAction(newCategory));
 
-      if (data.success) {
-        toast.success(data.message);
-
-        // Reset the form fields after success
-        setCategoryName("");
-        setDescription("");
-        setCreatedAt("");
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // Reset form fields
+    setCategoryName("");
+    setDescription("");
+    setCreatedAt("");
   };
 
   return (
     <ComponentCard title="Add New Category">
       <div className="space-y-6">
-        {/* Category Name Input */}
         <div>
           <Label>Category Name</Label>
           <Input
@@ -56,7 +39,6 @@ const AddCategoryProduct = () => {
           />
         </div>
 
-        {/* Description Input */}
         <div>
           <Label>Description</Label>
           <TextArea
@@ -66,13 +48,13 @@ const AddCategoryProduct = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <div className="flex justify-end">
           <Button
             onClick={handleSubmit}
+            disabled={isLoading}
             className="bg-brand-500 text-white px-4 py-2 rounded mt-6"
           >
-            Add Category Product
+            {isLoading ? "Adding..." : "Add Category Product"}
           </Button>
         </div>
       </div>
