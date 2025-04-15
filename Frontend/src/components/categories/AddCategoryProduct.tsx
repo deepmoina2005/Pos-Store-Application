@@ -7,25 +7,31 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import TextArea from "../form/input/TextArea";
 import Button from "../ui/button/Button";
+interface CategoryData {
+  name: string;
+  description: string; // Assuming it's a string, but you might want a Date type depending on your use case
+}
 
 const AddCategoryProduct = () => {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
 
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading } = useSelector((state: RootState) => state.addCategory);
 
   const handleSubmit = () => {
-    const newCategory = { categoryName, description, createdAt };
+    const newCategory: CategoryData = {
+      name: categoryName,
+      description: description,
+    };
+  
     dispatch(addCategoryAction(newCategory));
-
+  
     // Reset form fields
     setCategoryName("");
-    setDescription("");
-    setCreatedAt("");
+    setDescription(""); // You might remove this if not used
   };
-
+  
   return (
     <ComponentCard title="Add New Category">
       <div className="space-y-6">

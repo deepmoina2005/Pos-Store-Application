@@ -2,9 +2,8 @@ import axios from "axios";
 
 // Type for category data
 interface CategoryData {
-  categoryName: string;
-  description: string;
-  createdAt: string; // Assuming it's a string, but you might want a Date type depending on your use case
+  name: string;
+  description: string; // Assuming it's a string, but you might want a Date type depending on your use case
 }
 
 // API call for adding a new category

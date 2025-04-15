@@ -5,9 +5,8 @@ import toast from "react-hot-toast";
 
 // Define the type for categoryData
 interface CategoryData {
-  categoryName: string;
-  description: string;
-  createdAt: string; // Adjust the type if needed (Date, String, etc.)
+  name: string;
+  description: string; // Adjust the type if needed (Date, String, etc.)
 }
 
 // Async thunk for adding category
