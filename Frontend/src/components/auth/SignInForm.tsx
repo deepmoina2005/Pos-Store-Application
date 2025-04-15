@@ -48,7 +48,7 @@ export default function SignInForm() {
         }
         dispatch(loginAction(response.user));
         toast.success("Login successful!");
-        navigate("/");
+        navigate("/dashboard");
       } else {
         toast.error(response.message || "Login failed.");
       }
