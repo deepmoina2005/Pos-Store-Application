@@ -1,4 +1,4 @@
-import db from '../database/db.js';
+import db from '../config/db.js';
 
 export const createUnit = (req, res) => {
   const { name, abbreviation } = req.body;

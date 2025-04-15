@@ -1,4 +1,4 @@
-import db from '../database/db.js';
+import db from '../config/db.js';
 
 export const createCategory = (req, res) => {
   const { name, description } = req.body;

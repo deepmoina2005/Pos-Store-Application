@@ -158,25 +158,39 @@ const AllUnitsHistory = () => {
           </TableBody>
         </Table>
 
-        {/* Pagination Controls */}
-        <div className="flex justify-between items-center p-4">
-          <Button
-            onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
+         {/* Pagination Controls */}
+         <div className="flex items-center justify-between px-4 py-4">
+          <button
             disabled={currentPage === 1}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            className="text-sm text-gray-600 dark:text-gray-400 disabled:opacity-50"
           >
-            Previous
-          </Button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <Button
-            onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
+            ← Previous
+          </button>
+
+          <div className="flex gap-2">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`w-9 h-9 rounded-md text-sm ${
+                  currentPage === page
+                    ? "bg-indigo-600 text-white"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button
             disabled={currentPage === totalPages}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            className="text-sm text-gray-600 dark:text-gray-400 disabled:opacity-50"
           >
-            Next
-          </Button>
+            Next →
+          </button>
         </div>
       </div>
     </div>
