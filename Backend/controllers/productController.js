@@ -18,6 +18,7 @@ export const createProduct = (req, res) => {
     res.status(201).json({ message: 'Product created', id: result.lastInsertRowid });
   } catch (err) {
     res.status(500).json({ error: 'Failed to create product' });
+    console.log(err);    
   }
 };
 

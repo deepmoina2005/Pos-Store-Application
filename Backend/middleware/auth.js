@@ -8,7 +8,7 @@ const adminAuth = async (req, res, next) => {
 
   try {
     const toktnDecode = jwt.verify(sellerToken, process.env.JWT_SECRET);
-    if (toktnDecode.email === process.env.SELLER_EMAIL) {
+    if (toktnDecode.email === process.env.EMAIL) {
       next();
     } else {
       return res.json({ success: false, message: "Not Authorized" });

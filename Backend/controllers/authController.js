@@ -6,8 +6,8 @@ export const Login = async (req, res) => {
     const { email, password } = req.body;
 
     if (
-      password === process.env.SELLER_PASSWORD &&
-      email === process.env.SELLER_EMAIL
+      password === process.env.PASSWORD &&
+      email === process.env.EMAIL
     ) {
       const token = jwt.sign({ email }, process.env.JWT_SECRET, {
         expiresIn: "7d",
