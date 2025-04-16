@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import ComponentCard from "../common/ComponentCard";
@@ -6,12 +7,13 @@ import Input from "../form/input/InputField";
 import Select from "../form/Select";
 import toast from "react-hot-toast";
 import Button from "../ui/button/Button";
-import axios from "axios"; 
+import axios from "axios"; // ✅ Added this
 
 const AddProduct = () => {
   const [productImage, setProductImage] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
+  // const [description,setDescription] = useState("");
   const [productDiscountPrice, setProductDiscountPrice] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");

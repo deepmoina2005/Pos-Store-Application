@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addCategoryAPI } from "../../../services/addCategoryService";
+import { addCategoryAPI } from "../../services/addCategoryService";
 import toast from "react-hot-toast";
 
 // Define the type for categoryData

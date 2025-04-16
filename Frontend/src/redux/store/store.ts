@@ -1,17 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "../slices/authSlice";
-import addCategoryReducer from "../slices/category/addCategorySlice";
-import categoryListReducer from "../slices/category/categoryListSlice";
-import categoryUpdateReducer from "../slices/category/updateCategorySlice";
+import authReducer from "../slices/authSlice"; // Reducer for authentication
+import addCategoryReducer from "../slices/addCategorySlice"; // Reducer for category management
+import addProductReducer from "../slices/addProductSlice"; // Reducer for product management
 import { useDispatch } from "react-redux";
 
 // Create Redux store
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
-    addCategory: addCategoryReducer,
-    categoryList:categoryListReducer,
-    categoryUpdate:categoryUpdateReducer
+    auth: authReducer, // Authentication state
+    addCategory: addCategoryReducer, // Category state
+    addProduct: addProductReducer, // Product state
   },
 });
 

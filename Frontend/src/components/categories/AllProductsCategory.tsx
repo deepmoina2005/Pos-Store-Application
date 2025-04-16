@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,15 +9,19 @@ import {
 import Button from "../ui/button/Button";
 import { useNavigate } from "react-router";
 import { Pencil, Trash2 } from "lucide-react";
-import { fetchCategoryAction } from "../../redux/slices/category/categoryListSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store/store";
+
 interface ProductCategory {
   id: number;
-  name: string;
+  category_name: string;
   description: string;
-  status: boolean;
+  isActive: boolean;
 }
+
+const sampleProductCategories: ProductCategory[] = [
+  { id: 1, category_name: "Electronics", description: "Devices and gadgets", isActive: true },
+  { id: 2, category_name: "Furniture", description: "Home and office furniture", isActive: true },
+  { id: 3, category_name: "Clothing", description: "Apparel for men and women", isActive: false },
+];
 
 const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
   <label className="relative inline-flex cursor-pointer items-center">
@@ -32,28 +36,27 @@ const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: () =>
 );
 
 const AllProductCategories = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const productCategories = useSelector((state: RootState) => state.categoryList.categories as ProductCategory[]);
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>(sampleProductCategories);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(fetchCategoryAction());
-  }, [dispatch]);
-  const filteredCategories: ProductCategory[] = productCategories.filter(
-    (category: ProductCategory) =>
-      category.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+  const filteredCategories = productCategories.filter((category) =>
+    category.category_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
-  
 
   const handleToggleStatus = (id: number) => {
-    
+    setProductCategories((prev) =>
+      prev.map((category) =>
+        category.id === id ? { ...category, isActive: !category.isActive } : category
+      )
+    );
   };
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this category?")) {
-      }
+      setProductCategories((prev) => prev.filter((category) => category.id !== id));
+    }
   };
 
   return (
@@ -91,13 +94,13 @@ const AllProductCategories = () => {
           </TableHeader>
 
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {filteredCategories.map((category:ProductCategory) => (
+            {filteredCategories.map((category) => (
               <TableRow key={category.id}>
-                <TableCell className="px-5 py-4 text-start">{category.name}</TableCell>
+                <TableCell className="px-5 py-4 text-start">{category.category_name}</TableCell>
                 <TableCell className="px-5 py-4 text-start">{category.description}</TableCell>
                 <TableCell className="px-5 py-4 text-start">
                   <ToggleSwitch
-                    checked={category.status}
+                    checked={category.isActive}
                     onChange={() => handleToggleStatus(category.id)}
                   />
                 </TableCell>

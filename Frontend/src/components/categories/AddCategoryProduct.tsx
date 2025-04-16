@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
-import { addCategoryAction } from "../../redux/slices/category/addCategorySlice";
+import { addCategoryAction } from "../../redux/slices/addCategorySlice";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";

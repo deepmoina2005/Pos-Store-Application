@@ -30,11 +30,11 @@ export const getCategoryById = (req, res) => {
 
 export const updateCategory = (req, res) => {
   const { id } = req.params;
-  const { name, description, status } = req.body;
+  const { name, description } = req.body;
 
   try {
-    db.prepare(`UPDATE categories SET name = ?, description = ?, status = ? WHERE id = ?`)
-      .run(name, description || null,status || null, id);
+    db.prepare(`UPDATE categories SET name = ?, description = ? WHERE id = ?`)
+      .run(name, description || null, id);
     res.json({ message: 'Category updated' });
   } catch {
     res.status(500).json({ error: 'Failed to update category' });

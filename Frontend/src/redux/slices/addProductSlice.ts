@@ -1,60 +1,60 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addProductService } from "../../services/addProductService";
+import { addProductAPI, ProductWithImages } from "../../services/addProductService";
 
-// Initial state structure
-const initialState = {
+interface ProductState {
+  loading: boolean;
+  error: string | null;
+  success: boolean;
+}
+
+const initialState: ProductState = {
   loading: false,
-  success: false,
   error: null,
-  productData: null,
+  success: false,
 };
 
-// Async thunk to handle adding a product
 export const addProduct = createAsyncThunk(
   "product/addProduct",
-  async (formData: FormData, { rejectWithValue }) => {
+  async (productData: ProductWithImages, { rejectWithValue }) => {
     try {
-      const response = await addProductService(formData);
+      const response = await addProductAPI(productData);
       return response;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message || error.message || "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
 
-// Slice to manage the product state
-const addProductSlice = createSlice({
-  name: "addProduct",
+const productSlice = createSlice({
+  name: "product",
   initialState,
   reducers: {
-    // Reset product state
     resetProductState: (state) => {
       state.loading = false;
-      state.success = false;
       state.error = null;
-      state.productData = null;
+      state.success = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(addProduct.pending, (state) => {
         state.loading = true;
+        state.error = null;
+        state.success = false;
       })
-      .addCase(addProduct.fulfilled, (state, action) => {
+      .addCase(addProduct.fulfilled, (state) => {
         state.loading = false;
         state.success = true;
-        state.productData = action.payload;
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.loading = false;
-        state.success = false;
-        state.error = action.payload;
+        state.error = action.payload as string;
       });
   },
 });
 
-// Export the reset action to be dispatched
-export const { resetProductState } = addProductSlice.actions;
-
-// Default export for the reducer
-export default addProductSlice.reducer;
+export const { resetProductState } = productSlice.actions;
+export default productSlice.reducer;
