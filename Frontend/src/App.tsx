@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { Toaster } from "react-hot-toast";
 
 // Layout
 import AppLayout from "./layout/AppLayout";
@@ -66,6 +67,7 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Toaster/>
       <Routes>
         {/* App routes with layout */}
         <Route element={<AppLayout />}>

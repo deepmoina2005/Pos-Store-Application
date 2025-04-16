@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import ComponentCard from "../common/ComponentCard";
@@ -12,7 +13,7 @@ const AddProduct = () => {
   const [productImage, setProductImage] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [description,setDescription] = useState("");
+  // const [description,setDescription] = useState("");
   const [productDiscountPrice, setProductDiscountPrice] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
