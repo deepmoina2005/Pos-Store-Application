@@ -31,6 +31,7 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../index.html'));
+    mainWindow.webContents.openDevTools();
   }
 
   // IPC handlers
