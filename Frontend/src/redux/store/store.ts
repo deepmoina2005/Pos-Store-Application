@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../slices/authSlice"; // Reducer for authentication
-import addCategoryReducer from "../slices/addCategorySlice"; // Reducer for category management
+import addCategoryReducer from "../slices/category/addCategorySlice"; // Reducer for category management
 import addProductReducer from "../slices/addProductSlice";
 import catergoryListReducer from "../slices/category/categoryListSlice" // Reducer for product management
 import { useDispatch } from "react-redux";

@@ -1,6 +1,6 @@
 // categoryListSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCategoryAPI } from "../../../services/fetchCategoryService";
+import { fetchCategoryAPI } from "../../../services/category/fetchCategoryService";
 import toast from "react-hot-toast";
 
 interface CategoryData {
