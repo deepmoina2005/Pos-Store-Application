@@ -12,13 +12,13 @@ import { Pencil, Trash2 } from "lucide-react";
 import { fetchCategoryAction } from "../../redux/slices/category/categoryListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
-import { deleteCategoryAction } from "../../redux/slices/category/deleteCategorySlice";
+import { deleteCategoryAction, updateCategoryAction } from "../../redux/slices/category/categoryListSlice";
 
 interface CategoryData {
   id:number;
   name: string;
   description: string;
-  status:boolean;
+  status:number;
 }
 const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
   <label className="relative inline-flex cursor-pointer items-center">
@@ -46,18 +46,23 @@ const AllProductCategories = () => {
       }
   };
 
+  const handleToggleStatus = (data:CategoryData) => {
+    const hitData = {
+      id: data.id,
+      name: data.name, 
+      description: data.description,
+      status: data.status == 1 ? 0 : 1 , // Toggle the status
+    }
+    dispatch(updateCategoryAction(hitData));
+  };
+  
   useEffect(() => {
     dispatch(fetchCategoryAction());
-  }, [dispatch,handleDelete]);
+  }, [dispatch]);
   const filteredCategories = productCategories.filter((category) =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   
-  
-
-  const handleToggleStatus = (id: number) => {
-    
-  };
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -101,7 +106,7 @@ const AllProductCategories = () => {
                 <TableCell className="px-5 py-4 text-start">
                   <ToggleSwitch
                     checked={category.status}
-                    onChange={() => handleToggleStatus(category.id)}
+                    onChange={() => handleToggleStatus(category)}
                   />
                 </TableCell>
                 <TableCell className="px-5 py-4 text-start flex gap-2">

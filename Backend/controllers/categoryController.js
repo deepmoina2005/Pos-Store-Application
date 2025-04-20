@@ -30,14 +30,43 @@ export const getCategoryById = (req, res) => {
 
 export const updateCategory = (req, res) => {
   const { id } = req.params;
-  const { name, description,status } = req.body;
+  const { name, description, status } = req.body;
 
   try {
-    db.prepare(`UPDATE categories SET name = ?, description = ?, status = ? WHERE id = ?`)
-      .run(name, description || null,status||null, id);
-    res.json({ message: 'Category updated' });
-  } catch {
-    res.status(500).json({ error: 'Failed to update category' });
+    const updates = [];
+    const values = [];
+
+    if (name !== undefined) {
+      updates.push("name = ?");
+      values.push(name);
+    }
+
+    if (description !== undefined) {
+      updates.push("description = ?");
+      values.push(description);
+    }
+
+    if (status !== undefined) {
+      updates.push("status = ?");
+      values.push(status);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: "No fields provided to update." });
+    }
+
+    const sql = `UPDATE categories SET ${updates.join(", ")} WHERE id = ?`;
+    values.push(id); // add id at the end
+
+    db.prepare(sql).run(...values);
+
+    // ✅ Get the updated category and return it
+    const updatedCategory = db.prepare("SELECT * FROM categories WHERE id = ?").get(id);
+
+    res.json(updatedCategory); // return the updated category
+  } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).json({ error: "Failed to update category" });
   }
 };
 
