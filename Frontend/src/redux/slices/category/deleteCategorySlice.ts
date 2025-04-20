@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { updateCategoryAPI } from "../../../services/categoryUpdateService";
-
+import { deleteCategoryAPI } from "../../../services/category/deleteCategoryService";
 interface CategoryData {
   id:number;
   name: string;
@@ -21,12 +20,12 @@ const initialState: CategoryListState = {
   error: null,
 };
 
-export const updateCategoryAction = createAsyncThunk(
+export const deleteCategoryAction = createAsyncThunk(
   "category/update",
   async (category: CategoryData, { rejectWithValue }) => {
     try {
-      const response = await updateCategoryAPI(category);
-      toast.success("Category updated successfully.");
+      const response = await deleteCategoryAPI(category);
+      toast.success("Category deleted successfully.");
       return response.data; // Adjust based on your API response
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to update category.");
@@ -35,26 +34,26 @@ export const updateCategoryAction = createAsyncThunk(
   }
 );
 
-const categoryListSlice = createSlice({
+const deleteCategorySlice = createSlice({
   name: "categoryList",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-    .addCase(updateCategoryAction.pending, (state) => {
+    .addCase(deleteCategoryAction.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(updateCategoryAction.rejected, (state, action) => {
+    .addCase(deleteCategoryAction.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
     })
-    .addCase(updateCategoryAction.fulfilled, (state, action) => {
-      const updatedCategory = action.payload;
-      state.categories = state.categories.map((cat) =>
-        cat.id === updatedCategory.id ? updatedCategory : cat
+    .addCase(deleteCategoryAction.fulfilled, (state, action) => {
+      const deleteCategory = action.payload;
+      state.categories = state.categories.filter((cat) =>
+         cat.id !== deleteCategory.i
       );      
     })
   },
 });
 
-export default categoryListSlice.reducer;
+export default deleteCategorySlice.reducer;

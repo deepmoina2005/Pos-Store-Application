@@ -12,7 +12,14 @@ import { Pencil, Trash2 } from "lucide-react";
 import { fetchCategoryAction } from "../../redux/slices/category/categoryListSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
+import { deleteCategoryAction } from "../../redux/slices/category/deleteCategorySlice";
 
+interface CategoryData {
+  id:number;
+  name: string;
+  description: string;
+  status:boolean;
+}
 const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
   <label className="relative inline-flex cursor-pointer items-center">
     <input
@@ -32,9 +39,16 @@ const AllProductCategories = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const navigate = useNavigate();
+
+  const handleDelete = (data: CategoryData) => {
+    if (confirm("Are you sure you want to delete this category?")) {
+      dispatch(deleteCategoryAction(data))
+      }
+  };
+
   useEffect(() => {
     dispatch(fetchCategoryAction());
-  }, [dispatch]);
+  }, [dispatch,handleDelete]);
   const filteredCategories = productCategories.filter((category) =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -43,11 +57,6 @@ const AllProductCategories = () => {
 
   const handleToggleStatus = (id: number) => {
     
-  };
-
-  const handleDelete = (id: number) => {
-    if (confirm("Are you sure you want to delete this category?")) {
-      }
   };
 
   return (
@@ -104,7 +113,7 @@ const AllProductCategories = () => {
                     <Pencil size={18} />
                   </button>
                   <button
-                    onClick={() => handleDelete(category.id)}
+                    onClick={() => handleDelete(category)}
                     className="text-red-500 hover:text-red-700"
                     title="Delete"
                   >

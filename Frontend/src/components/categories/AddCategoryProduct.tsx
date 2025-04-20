@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
-import { addCategoryAction } from "../../redux/slices/category/addCategorySlice";
+import { addCategoryAction, resetAddCategoryState } from "../../redux/slices/category/addCategorySlice";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -61,8 +61,10 @@ const AddCategoryProduct = () => {
   useEffect(() => {
     if (isSuccess) {
       navigate("/all-categories");
+      dispatch(resetAddCategoryState()); // Reset success state after navigation
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, dispatch]);
+  
 
   return (
     <ComponentCard title="Add New Category">

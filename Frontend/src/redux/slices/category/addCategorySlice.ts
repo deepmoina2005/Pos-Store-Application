@@ -39,7 +39,12 @@ const initialState: AddCategoryState = {
 const addCategorySlice = createSlice({
   name: "addCategory",
   initialState,
-  reducers: {},
+  reducers: {
+    resetAddCategoryState: (state) => {
+      state.isSuccess = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addCategoryAction.pending, (state) => {
@@ -54,9 +59,10 @@ const addCategorySlice = createSlice({
       .addCase(addCategoryAction.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
-        state.error = action.payload as string;  // Update error with message
+        state.error = action.payload as string;
       });
   },
 });
 
+export const { resetAddCategoryState } = addCategorySlice.actions;
 export default addCategorySlice.reducer;
