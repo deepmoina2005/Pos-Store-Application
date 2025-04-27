@@ -6,6 +6,8 @@ import catergoryListReducer from "../slices/category/categoryListSlice"
 import deleteCategoryRedcucer from "../slices/category/deleteCategorySlice" // Reducer for product management
 import addSupplierReducer from "../slices/supplier/addSupplier";
 import supplierListReducer from "../slices/supplier/supplierSlice";
+import unitListReducer from "../slices/unit/unitSlice";
+import addUnitReducer from "../slices/unit/addUnitSlice";
 import { useDispatch } from "react-redux";
 
 // Create Redux store
@@ -14,10 +16,12 @@ export const store = configureStore({
     auth: authReducer, // Authentication state
     addCategory: addCategoryReducer, // Category state
     addProduct: addProductReducer, // Product state
-    categoryList:catergoryListReducer,
-    deleteCategory:deleteCategoryRedcucer,
-    supplierList:supplierListReducer,
-    addSupplier:addSupplierReducer
+    categoryList: catergoryListReducer,
+    deleteCategory: deleteCategoryRedcucer,
+    supplierList: supplierListReducer,
+    addSupplier: addSupplierReducer,
+    unitList: unitListReducer,
+    addUnit: addUnitReducer
   },
 });
 

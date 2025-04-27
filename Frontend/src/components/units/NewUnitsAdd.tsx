@@ -1,40 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
+import { addUnitAction, resetAddCategoryState } from "../../redux/slices/unit/addUnitSlice";
+import { AppDispatch, RootState } from "../../redux/store/store";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 const NewUnitsAdd = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [unitName, setUnitName] = useState("");
   const [pcs, setPcs] = useState("");
-  const [status, setStatus] = useState("");
 
+  const { isLoading, isSuccess } = useSelector((state: RootState) => state.addUnit);
   const handleSubmit = async () => {
     try {
       const newUnit = {
-        unit_name: unitName,
+        name: unitName,
         pcs,
-        status,
       };
 
-      const { data } = await axios.post("/api/unit/add", newUnit);
+      const data = await dispatch(addUnitAction(newUnit));
 
-      if (data.success) {
-        toast.success(data.message || "Unit added successfully!");
+      if (!data) {
+        toast.success("Unit added successfully!");
         setUnitName("");
         setPcs("");
-        setStatus("");
       } else {
-        toast.error(data.message || "Failed to add unit.");
+        toast.error("Failed to add unit.");
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || error.message);
     }
   };
-
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(resetAddCategoryState()); // Reset success state after navigation
+    }
+  }, [isSuccess, dispatch]);
   return (
     <ComponentCard title="Add New Unit">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -57,18 +62,7 @@ const NewUnitsAdd = () => {
             onChange={(e) => setPcs(e.target.value)}
           />
         </div>
-
-        <div className="md:col-span-2">
-          <Label>Status</Label>
-          <Input
-            placeholder="Enter Status (e.g. Active, Inactive)"
-            type="text"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          />
-        </div>
-
-        <div className="md:col-span-2 flex justify-end">
+        <div className="md:col-span-2 flex justify-start">
           <Button
             onClick={handleSubmit}
             className="bg-brand-500 text-white px-4 py-2 rounded mt-6"
