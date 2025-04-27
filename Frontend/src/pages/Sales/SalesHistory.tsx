@@ -3,6 +3,7 @@ import HistorySales from '../../components/Sales/HistorySales'
 import Button from '../../components/ui/button/Button';
 import PageBreadcrumb from '../../components/common/PageBreadCrumb';
 import { Modal } from '../../components/ui/modal';
+import { useModal } from '../../hooks/useModal';
 
 const SalesHistory = () => {
   const { isOpen, closeModal } = useModal();
