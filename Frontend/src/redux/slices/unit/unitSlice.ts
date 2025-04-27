@@ -7,6 +7,8 @@ interface UnitData {
     id: number; // Assuming you have an ID to identify the unit
     name: string;
     pcs?: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface UnitListState {

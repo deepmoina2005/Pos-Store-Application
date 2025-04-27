@@ -11,7 +11,7 @@ interface UnitData {
 
 // Async thunk for adding category
 export const addUnitAction = createAsyncThunk(
-    "supplier/add",
+    "unit/add",
     async (unitData: UnitData, { rejectWithValue }) => {
         try {
             const response = await addUnitAPI(unitData);

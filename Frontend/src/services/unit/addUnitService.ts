@@ -5,7 +5,7 @@ interface Unit {
 }
 export const addUnitAPI = async (data: Unit) => {
   try {
-    const response = await axios.post("http://localhost:3000/supplier", data);
+    const response = await axios.post("http://localhost:3000/unit", data);
     return response;
   } catch (error) {
     console.error("Error while adding ", error);

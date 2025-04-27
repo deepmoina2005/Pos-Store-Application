@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchUnitAPI = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/unit");
+    const response = await axios.get("http://localhost:3000/unit");
     return response;
   } catch (error) {
     // Handle error (e.g., network issue or bad response)

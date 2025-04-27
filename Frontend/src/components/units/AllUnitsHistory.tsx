@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,61 +9,28 @@ import {
 import Button from "../ui/button/Button";
 import { useNavigate } from "react-router";
 import { Pencil, Trash2 } from "lucide-react";
-
-interface Unit {
-  id: number;
-  unit_name: string;
-  created_at: string;
-  updated_at: string;
-  isActive: boolean;
-}
-
-const sampleUnits: Unit[] = [
-  { id: 1, unit_name: "Kilogram (kg)", created_at: "2025-04-01T10:00:00Z", updated_at: "2025-04-02T10:00:00Z", isActive: true },
-  { id: 2, unit_name: "Liter (L)", created_at: "2025-04-03T10:00:00Z", updated_at: "2025-04-04T10:00:00Z", isActive: true },
-  { id: 3, unit_name: "Piece (pc)", created_at: "2025-04-05T10:00:00Z", updated_at: "2025-04-06T10:00:00Z", isActive: false },
-  { id: 4, unit_name: "Gram (g)", created_at: "2025-04-07T10:00:00Z", updated_at: "2025-04-08T10:00:00Z", isActive: true },
-  { id: 5, unit_name: "Milliliter (ml)", created_at: "2025-04-09T10:00:00Z", updated_at: "2025-04-10T10:00:00Z", isActive: true },
-  { id: 6, unit_name: "Dozen (dz)", created_at: "2025-04-11T10:00:00Z", updated_at: "2025-04-12T10:00:00Z", isActive: false },
-  { id: 7, unit_name: "Meter (m)", created_at: "2025-04-13T10:00:00Z", updated_at: "2025-04-14T10:00:00Z", isActive: true },
-  { id: 8, unit_name: "Centimeter (cm)", created_at: "2025-04-15T10:00:00Z", updated_at: "2025-04-16T10:00:00Z", isActive: true },
-  { id: 9, unit_name: "Box", created_at: "2025-04-17T10:00:00Z", updated_at: "2025-04-18T10:00:00Z", isActive: false },
-  { id: 10, unit_name: "Pack", created_at: "2025-04-19T10:00:00Z", updated_at: "2025-04-20T10:00:00Z", isActive: true },
-  { id: 11, unit_name: "Carton", created_at: "2025-04-21T10:00:00Z", updated_at: "2025-04-22T10:00:00Z", isActive: true },
-  { id: 12, unit_name: "Pair", created_at: "2025-04-23T10:00:00Z", updated_at: "2025-04-24T10:00:00Z", isActive: false },
-  { id: 13, unit_name: "Bundle", created_at: "2025-04-25T10:00:00Z", updated_at: "2025-04-26T10:00:00Z", isActive: true },
-  { id: 14, unit_name: "Roll", created_at: "2025-04-27T10:00:00Z", updated_at: "2025-04-28T10:00:00Z", isActive: false },
-  { id: 15, unit_name: "Sachet", created_at: "2025-04-29T10:00:00Z", updated_at: "2025-04-30T10:00:00Z", isActive: true },
-  { id: 16, unit_name: "Tablet", created_at: "2025-05-01T10:00:00Z", updated_at: "2025-05-02T10:00:00Z", isActive: true },
-  { id: 17, unit_name: "Bottle", created_at: "2025-05-03T10:00:00Z", updated_at: "2025-05-04T10:00:00Z", isActive: false },
-  { id: 18, unit_name: "Piece (single)", created_at: "2025-05-05T10:00:00Z", updated_at: "2025-05-06T10:00:00Z", isActive: true },
-  { id: 19, unit_name: "Strip", created_at: "2025-05-07T10:00:00Z", updated_at: "2025-05-08T10:00:00Z", isActive: false },
-  { id: 20, unit_name: "Serving", created_at: "2025-05-09T10:00:00Z", updated_at: "2025-05-10T10:00:00Z", isActive: true },
-];
-
-// Toggle switch component
-const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => (
-  <label className="relative inline-flex cursor-pointer items-center">
-    <input
-      type="checkbox"
-      className="sr-only peer"
-      checked={checked}
-      onChange={onChange}
-    />
-    <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors duration-300 ease-in-out after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:duration-300 peer-checked:after:translate-x-5"></div>
-  </label>
-);
+import { fetchUnitAction } from "../../redux/slices/unit/unitSlice";
+import { AppDispatch, RootState } from "../../redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
 
 const AllUnitsHistory = () => {
-  const [units, setUnits] = useState<Unit[]>(sampleUnits);
+  const dispatch = useDispatch<AppDispatch>();
+  const units = useSelector((state: RootState) => state.unitList.units)
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const navigate = useNavigate();
   const itemsPerPage = 10;
 
+  const handleDelete = (id: number) => {
+    console.log(id);
+  };
+
+  useEffect(() => {
+    dispatch(fetchUnitAction());
+  }, [dispatch]);
   const filteredUnits = units.filter((unit) =>
-    unit.unit_name.toLowerCase().includes(searchQuery.toLowerCase())
+    unit.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredUnits.length / itemsPerPage);
@@ -72,19 +39,6 @@ const AllUnitsHistory = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  const handleDelete = (id: number) => {
-    setUnits((prev) => prev.filter((u) => u.id !== id));
-  };
-
-  const handleToggleStatus = (id: number) => {
-    setUnits((prev) =>
-      prev.map((unit) =>
-        unit.id === id ? { ...unit, isActive: !unit.isActive } : unit
-      )
-    );
-  };
-
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -107,7 +61,7 @@ const AllUnitsHistory = () => {
         <Table>
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
             <TableRow>
-              {["Unit Name", "Created At", "Updated At", "Status", "Actions"].map(
+              {["Unit Name", "Created At", "Updated At", "Actions"].map(
                 (heading) => (
                   <TableCell
                     key={heading}
@@ -124,18 +78,12 @@ const AllUnitsHistory = () => {
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
             {paginatedUnits.map((unit) => (
               <TableRow key={unit.id}>
-                <TableCell className="px-5 py-4 text-start">{unit.unit_name}</TableCell>
+                <TableCell className="px-5 py-4 text-start">{unit.name}</TableCell>
                 <TableCell className="px-5 py-4 text-start text-xs text-gray-500">
                   {new Date(unit.created_at).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="px-5 py-4 text-start text-xs text-gray-500">
                   {new Date(unit.updated_at).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="px-5 py-4 text-start">
-                  <ToggleSwitch
-                    checked={unit.isActive}
-                    onChange={() => handleToggleStatus(unit.id)}
-                  />
                 </TableCell>
                 <TableCell className="px-5 py-4 text-start">
                   <button
@@ -158,8 +106,8 @@ const AllUnitsHistory = () => {
           </TableBody>
         </Table>
 
-         {/* Pagination Controls */}
-         <div className="flex items-center justify-between px-4 py-4">
+        {/* Pagination Controls */}
+        <div className="flex items-center justify-between px-4 py-4">
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
@@ -173,11 +121,10 @@ const AllUnitsHistory = () => {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-9 h-9 rounded-md text-sm ${
-                  currentPage === page
-                    ? "bg-indigo-600 text-white"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`}
+                className={`w-9 h-9 rounded-md text-sm ${currentPage === page
+                  ? "bg-indigo-600 text-white"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
               >
                 {page}
               </button>
