@@ -23,12 +23,12 @@ const createWindow = () => {
     frame: true,
   });
 
-  // Set Content Security Policy (CSP) for better security
-  mainWindow.webContents.on('did-finish-load', () => {
+  // Set Content Security Policy (CSP) at window load
+  mainWindow.webContents.on('did-start-loading', () => {
     mainWindow.webContents.executeJavaScript(`
       const meta = document.createElement('meta');
       meta.httpEquiv = 'Content-Security-Policy';
-      meta.content = "default-src 'self'; script-src 'self'; object-src 'none';";
+      meta.content = "default-src 'self'; connect-src 'self' http://localhost:3000; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none';";
       document.head.appendChild(meta);
     `);
   });
