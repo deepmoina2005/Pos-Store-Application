@@ -1,14 +1,14 @@
 import db from '../config/db.js';
 
 export const createUnit = (req, res) => {
-  const { name, abbreviation } = req.body;
-  if (!name || !abbreviation)
-    return res.status(400).json({ error: 'Both name and abbreviation are required' });
+  const { name, pcs } = req.body;
+  if (!name)
+    return res.status(400).json({ error: 'Name is required' });
 
   try {
     const result = db.prepare(`
-      INSERT INTO units (name, abbreviation) VALUES (?, ?)
-    `).run(name, abbreviation);
+      INSERT INTO units (name, pcs) VALUES (?, ?)
+    `).run(name, pcs);
     res.status(201).json({ message: 'Unit created', id: result.lastInsertRowid });
   } catch {
     res.status(500).json({ error: 'Failed to create unit' });
