@@ -8,7 +8,7 @@ interface SupplierData{
 export const addSupplierAPI = async (data: SupplierData) => {
   try {
     const response = await axios.post("http://localhost:3000/supplier",data);
-    return response; // Return the response data if successful
+    return response.data; // Return the response data if successful
   } catch (error) {
     // Handle error (e.g., network issue or bad response)
     console.error("Error adding supplier:", error);

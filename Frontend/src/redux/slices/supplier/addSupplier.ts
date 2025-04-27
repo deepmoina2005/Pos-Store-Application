@@ -16,7 +16,6 @@ export const addSupplierAction = createAsyncThunk(
   async (categoryData: CategoryData, { rejectWithValue }) => {
     try {
       const response = await addSupplierAPI(categoryData);
-      toast.success(response.data.message);
       return response;  // Return the response data
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to add category.");

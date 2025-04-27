@@ -6,33 +6,35 @@ import Input from "../form/input/InputField";
 import TextArea from "../form/input/TextArea"; // <-- Added
 import Button from "../ui/button/Button";
 import toast from "react-hot-toast";
-import axios from "axios";
+import { addSupplierAction } from "../../redux/slices/supplier/addSupplier"; // <-- Updated import path
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store/store";
 
 const AddNewSuppliers = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [supplierName, setSupplierName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
-
   const handleSubmit = async () => {
     try {
       const newSupplier = {
-        supplier_name: supplierName,
+        name: supplierName,
         phone,
         address,
         description,
       };
 
-      const { data } = await axios.post("/api/supplier/add", newSupplier);
-
-      if (data.success) {
-        toast.success(data.message || "Supplier added successfully!");
+      const result = await dispatch(addSupplierAction(newSupplier));
+      const data = result.payload;
+      if (data.supplier_id) {
+        toast.success("Supplier added successfully!");
         setSupplierName("");
         setPhone("");
         setAddress("");
         setDescription("");
       } else {
-        toast.error(data.message || "Failed to add supplier.");
+        toast.error("Failed to add supplier.");
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || error.message);
@@ -77,9 +79,7 @@ const AddNewSuppliers = () => {
           <TextArea
             placeholder="Enter Description"
             value={description}
-            onChange={(e) =>
-              setDescription(typeof e === "string" ? e : e)
-            }
+            onChange={(e) => setDescription(typeof e === "string" ? e : e)}
             rows={4}
           />
         </div>

@@ -1,7 +1,7 @@
 import db from '../config/db.js';
 
 export const createSupplier = (req, res) => {
-  const { name, phone, address } = req.body;
+  const { name, phone, address, description } = req.body;
 
   if (!name) {
     return res.status(400).json({ error: 'Supplier name is required' });
@@ -9,10 +9,10 @@ export const createSupplier = (req, res) => {
 
   try {
     const stmt = db.prepare(`
-      INSERT INTO suppliers (name, phone, address)
-      VALUES (?, ?, ?)
+      INSERT INTO suppliers (name, phone, address, description)
+      VALUES (?, ?, ?, ?)
     `);
-    const result = stmt.run(name, phone || null, address || null);
+    const result = stmt.run(name, phone || null, address || null, description || null);
 
     res.status(201).json({ message: 'Supplier created', supplier_id: result.lastInsertRowid });
   } catch (err) {

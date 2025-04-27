@@ -8,17 +8,17 @@ interface SupplierData {
     id: number; // Assuming you have an ID to identify the supplier
     name: string;
     phone: string;
-    address:string
+    address: string
 }
 
 interface SupplierListState {
-    categories: SupplierData[];
+    suppliers: SupplierData[];
     isLoading: boolean;
     error: string | null;
 }
 
 const initialState: SupplierListState = {
-    categories: [],
+    suppliers: [],
     isLoading: false,
     error: null,
 };
@@ -82,7 +82,8 @@ const supplierSlice = createSlice({
             })
             .addCase(fetchSupplierAction.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.categories = action.payload;
+                console.log(action.payload);
+                state.suppliers = action.payload;
             })
             .addCase(fetchSupplierAction.rejected, (state, action) => {
                 state.isLoading = false;
@@ -95,7 +96,7 @@ const supplierSlice = createSlice({
             })
             .addCase(deleteSupplierAction.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.categories = state.categories.filter(
+                state.suppliers = state.suppliers.filter(
                     (cat) => cat.id !== action.payload
                 );
             })
@@ -111,7 +112,7 @@ const supplierSlice = createSlice({
             .addCase(updateSupplierAction.fulfilled, (state, action) => {
                 state.isLoading = false;
                 console.log(action.payload);
-                state.categories = state.categories.map((cat) =>
+                state.suppliers = state.suppliers.map((cat) =>
                     cat.id === action.payload.id ? action.payload : cat
                 );
             })

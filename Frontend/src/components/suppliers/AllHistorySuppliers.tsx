@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,233 +9,35 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import Button from "../ui/button/Button";
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store/store";
+import { deleteSupplierAction, fetchSupplierAction } from "../../redux/slices/supplier/supplierSlice";
 
-interface Supplier {
-  id: number;
-  supplier_name: string;
+interface SupplierData {
+  id: number; // Assuming you have an ID to identify the supplier
+  name: string;
   phone: string;
-  address: string;
-  opening: string;
+  address:string;
   created_at: string;
   updated_at: string;
-  isActive: boolean;
 }
 
-const sampleSuppliers: Supplier[] = [
-  {
-    id: 1,
-    supplier_name: "Supplier A",
-    phone: "1234567890",
-    address: "123 Main St, City A",
-    opening: "5000",
-    created_at: "2025-04-01T10:00:00Z",
-    updated_at: "2025-04-02T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 2,
-    supplier_name: "Supplier B",
-    phone: "9876543210",
-    address: "456 Oak Rd, City B",
-    opening: "2500",
-    created_at: "2025-04-03T10:00:00Z",
-    updated_at: "2025-04-04T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 3,
-    supplier_name: "Supplier C",
-    phone: "1122334455",
-    address: "789 Pine St, City C",
-    opening: "3200",
-    created_at: "2025-04-05T10:00:00Z",
-    updated_at: "2025-04-06T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 4,
-    supplier_name: "Supplier D",
-    phone: "5566778899",
-    address: "101 Maple Ave, City D",
-    opening: "4100",
-    created_at: "2025-04-07T10:00:00Z",
-    updated_at: "2025-04-08T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 5,
-    supplier_name: "Supplier E",
-    phone: "9988776655",
-    address: "202 Elm St, City E",
-    opening: "1500",
-    created_at: "2025-04-09T10:00:00Z",
-    updated_at: "2025-04-10T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 6,
-    supplier_name: "Supplier F",
-    phone: "4433221100",
-    address: "303 Birch Rd, City F",
-    opening: "2700",
-    created_at: "2025-04-11T10:00:00Z",
-    updated_at: "2025-04-12T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 7,
-    supplier_name: "Supplier G",
-    phone: "1231231234",
-    address: "404 Cedar Ln, City G",
-    opening: "3600",
-    created_at: "2025-04-13T10:00:00Z",
-    updated_at: "2025-04-14T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 8,
-    supplier_name: "Supplier H",
-    phone: "3213214321",
-    address: "505 Walnut St, City H",
-    opening: "4800",
-    created_at: "2025-04-15T10:00:00Z",
-    updated_at: "2025-04-16T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 9,
-    supplier_name: "Supplier I",
-    phone: "5551112222",
-    address: "606 Willow Rd, City I",
-    opening: "1900",
-    created_at: "2025-04-17T10:00:00Z",
-    updated_at: "2025-04-18T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 10,
-    supplier_name: "Supplier J",
-    phone: "6667778888",
-    address: "707 Ash St, City J",
-    opening: "3300",
-    created_at: "2025-04-19T10:00:00Z",
-    updated_at: "2025-04-20T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 11,
-    supplier_name: "Supplier K",
-    phone: "2223334444",
-    address: "808 Beech Ave, City K",
-    opening: "2950",
-    created_at: "2025-04-21T10:00:00Z",
-    updated_at: "2025-04-22T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 12,
-    supplier_name: "Supplier L",
-    phone: "1112223333",
-    address: "909 Spruce St, City L",
-    opening: "4200",
-    created_at: "2025-04-23T10:00:00Z",
-    updated_at: "2025-04-24T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 13,
-    supplier_name: "Supplier M",
-    phone: "8889990000",
-    address: "1010 Chestnut Rd, City M",
-    opening: "3800",
-    created_at: "2025-04-25T10:00:00Z",
-    updated_at: "2025-04-26T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 14,
-    supplier_name: "Supplier N",
-    phone: "3334445555",
-    address: "1111 Poplar Ln, City N",
-    opening: "1700",
-    created_at: "2025-04-27T10:00:00Z",
-    updated_at: "2025-04-28T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 15,
-    supplier_name: "Supplier O",
-    phone: "4445556666",
-    address: "1212 Sycamore Ave, City O",
-    opening: "2600",
-    created_at: "2025-04-29T10:00:00Z",
-    updated_at: "2025-04-30T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 16,
-    supplier_name: "Supplier P",
-    phone: "7778889999",
-    address: "1313 Magnolia St, City P",
-    opening: "3100",
-    created_at: "2025-05-01T10:00:00Z",
-    updated_at: "2025-05-02T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 17,
-    supplier_name: "Supplier Q",
-    phone: "9990001111",
-    address: "1414 Dogwood Rd, City Q",
-    opening: "3900",
-    created_at: "2025-05-03T10:00:00Z",
-    updated_at: "2025-05-04T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 18,
-    supplier_name: "Supplier R",
-    phone: "0001112222",
-    address: "1515 Fir St, City R",
-    opening: "2000",
-    created_at: "2025-05-05T10:00:00Z",
-    updated_at: "2025-05-06T10:00:00Z",
-    isActive: false,
-  },
-  {
-    id: 19,
-    supplier_name: "Supplier S",
-    phone: "1113335555",
-    address: "1616 Alder Ln, City S",
-    opening: "4400",
-    created_at: "2025-05-07T10:00:00Z",
-    updated_at: "2025-05-08T10:00:00Z",
-    isActive: true,
-  },
-  {
-    id: 20,
-    supplier_name: "Supplier T",
-    phone: "2224446666",
-    address: "1717 Redwood Ave, City T",
-    opening: "2300",
-    created_at: "2025-05-09T10:00:00Z",
-    updated_at: "2025-05-10T10:00:00Z",
-    isActive: false,
-  },
-];
-
 const AllHistorySuppliers = () => {
-  const [suppliers, setSuppliers] = useState<Supplier[]>(sampleSuppliers);
+  const dispatch = useDispatch<AppDispatch>();
+  const suppliers = useSelector((state: RootState) => state.supplierList.suppliers);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-
   const navigate = useNavigate();
+  
   const itemsPerPage = 10;
 
+  useEffect(()=>{
+    dispatch(fetchSupplierAction());
+  },[]);
+  
   const filteredSuppliers = suppliers.filter((supplier) =>
-    supplier.supplier_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+    supplier.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  
   const totalPages = Math.ceil(filteredSuppliers.length / itemsPerPage);
 
   const paginatedSuppliers = filteredSuppliers.slice(
@@ -261,18 +63,8 @@ const AllHistorySuppliers = () => {
     </label>
   );
 
-  const handleDelete = (id: number) => {
-    setSuppliers((prev) => prev.filter((s) => s.id !== id));
-  };
-
-  const handleToggleStatus = (id: number) => {
-    setSuppliers((prev) =>
-      prev.map((supplier) =>
-        supplier.id === id
-          ? { ...supplier, isActive: !supplier.isActive }
-          : supplier
-      )
-    );
+  const handleDelete =async (supplier: SupplierData) => {
+    await dispatch(deleteSupplierAction(supplier))
   };
 
   return (
@@ -302,10 +94,9 @@ const AllHistorySuppliers = () => {
                 "Name",
                 "Phone",
                 "Address",
+                "Description",
                 "Created At",
-                "Updated At",
-                "Status",
-                "Actions",
+                "Updated At"
               ].map((heading) => (
                 <TableCell
                   key={heading}
@@ -319,10 +110,10 @@ const AllHistorySuppliers = () => {
           </TableHeader>
 
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {paginatedSuppliers.map((supplier) => (
+            {paginatedSuppliers.map((supplier:any) => (
               <TableRow key={supplier.id}>
                 <TableCell className="px-5 py-4 text-start">
-                  {supplier.supplier_name}
+                  {supplier.name}
                 </TableCell>
                 <TableCell className="px-5 py-4 text-start">
                   {supplier.phone}
@@ -337,12 +128,6 @@ const AllHistorySuppliers = () => {
                   {new Date(supplier.updated_at).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="px-5 py-4">
-                  <ToggleSwitch
-                    checked={supplier.isActive}
-                    onChange={() => handleToggleStatus(supplier.id)}
-                  />
-                </TableCell>
-                <TableCell className="px-5 py-4">
                   <div className="flex gap-3">
                     <button
                       onClick={() => navigate(`/edit-category/`)}
@@ -352,7 +137,7 @@ const AllHistorySuppliers = () => {
                       <Pencil size={18} />
                     </button>
                     <button
-                      onClick={() => handleDelete(supplier.id)}
+                      onClick={() => handleDelete(supplier)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <Trash2 size={18} />
