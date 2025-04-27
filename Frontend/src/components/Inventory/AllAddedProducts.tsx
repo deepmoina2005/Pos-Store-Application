@@ -126,7 +126,7 @@ const tableData: Product[] = [
 ];
 
 
-export default function AllProducts() {
+export default function AllAddedProducts() {
   const [products, setProducts] = useState<Product[]>(tableData);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
