@@ -56,10 +56,12 @@
       // Show titlebar when mouse is at the top edge of the window
       document.addEventListener("mousemove", (e) => {
         const titlebar = document.getElementById("titlebar");
-        if (e.clientY <= 10) { // Trigger at the top 10px
-          titlebar.classList.add("show");
-        } else {
-          titlebar.classList.remove("show");
+        if (titlebar) { // Check if titlebar exists
+          if (e.clientY <= 10) { // Trigger at the top 10px
+            titlebar.classList.add("show");
+          } else {
+            titlebar.classList.remove("show");
+          }
         }
       });
     </script>

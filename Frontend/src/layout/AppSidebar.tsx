@@ -28,6 +28,8 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { icon: <LayoutDashboard />, name: "Dashboard", path: "/dashboard" },
+  { icon: <Calendar />, name: "Calendar", path: "/calendar" },
+
   {
     icon: <ChartColumnIncreasing />,
     name: "Sales",
@@ -83,7 +85,6 @@ const navItems: NavItem[] = [
       { name: "Profit And Loss", path: "/profit-and-loss" },
     ],
    },
-  { icon: <Calendar />, name: "Calendar", path: "/calendar" },
   { icon: <Settings />, name: "Settings", path: "/settings" },
   { icon: <CircleUserRound />, name: "Profile", path: "/profile" },
   { icon: <LogOut />, name: "Logout", path: "/" },

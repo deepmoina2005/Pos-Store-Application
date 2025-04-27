@@ -13,16 +13,25 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon: path.join(__dirname, 'assets', 'main-logo.png'), // ← set your custom logo here
+    icon: path.join(__dirname, 'assets', 'main-logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: true,
+      nodeIntegration: false, // Disabled for security reasons
     },
     autoHideMenuBar: true,
     frame: true,
   });
-  
+
+  // Set Content Security Policy (CSP) for better security
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.executeJavaScript(`
+      const meta = document.createElement('meta');
+      meta.httpEquiv = 'Content-Security-Policy';
+      meta.content = "default-src 'self'; script-src 'self'; object-src 'none';";
+      document.head.appendChild(meta);
+    `);
+  });
 
   Menu.setApplicationMenu(null);
 
@@ -33,7 +42,7 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, '../index.html'));
   }
 
-  // IPC handlers
+  // IPC handlers for window controls
   ipcMain.on('window-minimize', () => mainWindow.minimize());
   ipcMain.on('window-maximize', () => {
     if (mainWindow.isMaximized()) {
