@@ -16,15 +16,6 @@ layer(base);
   display: none; /* Chrome, Safari, Opera */
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-.smooth-scroll {
-  scroll-behavior: smooth;
-}
-
-
 @theme {
   --font-*: initial;
   --font-outfit: Outfit, sans-serif;

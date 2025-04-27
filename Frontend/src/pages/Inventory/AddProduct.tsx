@@ -20,7 +20,7 @@ const AddProducts: React.FC = () => {
         title="React.js Calendar Dashboard | TailAdmin - Next.js Admin Dashboard Template"
         description="This is React.js Calendar Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
-      <div className="overflow-auto scroll-smooth h-full">
+      <div className="overflow-auto h-full">
         <div className="flex items-center justify-between mb-4 px-4 py-2">
           <Button
             onClick={handleBackClick}
