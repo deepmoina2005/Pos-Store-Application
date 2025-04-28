@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
@@ -7,9 +6,9 @@ import Select from "../form/Select";
 import Button from "../ui/button/Button";
 import toast from "react-hot-toast";
 import TextArea from "../form/input/TextArea";
-import DatePicker from "../form/date-picker"; // Import DatePicker component
+import DatePicker from "../form/date-picker";
 import axios from "axios";
-import ReactSelect from "react-select"; // NEW: for searchable select
+import ReactSelect from "react-select";
 
 const AddPurchaseProduct = () => {
   const [supplier, setSupplier] = useState<string>("");
