@@ -16,15 +16,16 @@ const NewUnitsAdd = () => {
 
   const { isLoading, isSuccess } = useSelector((state: RootState) => state.addUnit);
   const handleSubmit = async () => {
+
     try {
       const newUnit = {
         name: unitName,
         pcs,
       };
 
-      const data = await dispatch(addUnitAction(newUnit));
+      const { payload } = await dispatch(addUnitAction(newUnit));
 
-      if (!data) {
+      if (payload?.message) {
         toast.success("Unit added successfully!");
         setUnitName("");
         setPcs("");
