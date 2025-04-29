@@ -44,7 +44,7 @@ export const deleteSupplierAction = createAsyncThunk(
     "supplier/delete",
     async (supplier: SupplierData, { rejectWithValue }) => {
         try {
-            const response = await deleteSupplierAPI(supplier);
+            await deleteSupplierAPI(supplier);
             toast.success("supplier deleted successfully.");
             return supplier.id;
         } catch (error: any) {

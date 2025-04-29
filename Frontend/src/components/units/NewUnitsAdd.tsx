@@ -25,7 +25,7 @@ const NewUnitsAdd = () => {
 
       const { payload } = await dispatch(addUnitAction(newUnit));
 
-      if (payload?.message) {
+      if (payload.message) {
         toast.success("Unit added successfully!");
         setUnitName("");
         setPcs("");

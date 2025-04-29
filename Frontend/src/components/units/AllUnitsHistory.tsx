@@ -12,6 +12,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { fetchUnitAction } from "../../redux/slices/unit/unitSlice";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteUnitAction } from "../../redux/slices/unit/unitSlice";
 
 const AllUnitsHistory = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,8 +23,8 @@ const AllUnitsHistory = () => {
   const navigate = useNavigate();
   const itemsPerPage = 10;
 
-  const handleDelete = (id: number) => {
-    console.log(id);
+  const handleDelete = async (data: any) => {
+    await dispatch(deleteUnitAction(data));
   };
 
   useEffect(() => {
@@ -94,7 +95,7 @@ const AllUnitsHistory = () => {
                     <Pencil size={18} />
                   </button>
                   <button
-                    onClick={() => handleDelete(unit.id)}
+                    onClick={() => handleDelete(unit)}
                     className="text-red-500 hover:text-red-700 ml-2"
                     title="Delete"
                   >

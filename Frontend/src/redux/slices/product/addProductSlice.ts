@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addProductAPI, ProductWithImages } from "../../services/addProductService";
+import { addProductAPI, ProductWithImages } from "../../../services/product/addProductService";
 
 interface ProductState {
   loading: boolean;
@@ -14,7 +14,7 @@ const initialState: ProductState = {
   success: false,
 };
 
-export const addProduct = createAsyncThunk(
+export const addProductAction = createAsyncThunk(
   "product/addProduct",
   async (productData: ProductWithImages, { rejectWithValue }) => {
     try {
@@ -40,16 +40,16 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addProduct.pending, (state) => {
+      .addCase(addProductAction.pending, (state) => {
         state.loading = true;
         state.error = null;
         state.success = false;
       })
-      .addCase(addProduct.fulfilled, (state) => {
+      .addCase(addProductAction.fulfilled, (state) => {
         state.loading = false;
         state.success = true;
       })
-      .addCase(addProduct.rejected, (state, action) => {
+      .addCase(addProductAction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

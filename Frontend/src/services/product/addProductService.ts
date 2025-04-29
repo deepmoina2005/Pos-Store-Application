@@ -3,11 +3,10 @@ import axios from "axios";
 // Type for product data (without images)
 export interface ProductData {
   name: string;
-  description: string;
   selling_price: number;
-  unit_of_measure: string;
+  unit_id: number;
   brand: string;
-  category_id: string;
+  category_id: number;
 }
 
 // New type for product data with images
@@ -30,11 +29,7 @@ export const addProductAPI = async (data: ProductWithImages) => {
     });
 
     // Make POST request with multipart/form-data
-    const response = await axios.post("http://localhost:3000/product/add", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post("http://localhost:3000/product/add", formData);
 
     return response.data; // Return the response data if successful
   } catch (error) {
