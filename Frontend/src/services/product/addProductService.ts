@@ -24,9 +24,7 @@ export const addProductAPI = async (data: ProductWithImages) => {
     formData.append("productData", JSON.stringify(data.productData));
 
     // Append each image file
-    data.images.forEach((file) => {
-      formData.append("images", file);
-    });
+    formData.append("image", data.images[0]);
 
     // Make POST request with multipart/form-data
     const response = await axios.post("http://localhost:3000/product/add", formData);

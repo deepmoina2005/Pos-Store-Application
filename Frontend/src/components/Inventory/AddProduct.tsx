@@ -13,10 +13,8 @@ import { addProductAction } from "../../redux/slices/product/addProductSlice";
 import { ProductData } from "../../services/product/addProductService";
 
 const AddProduct = () => {
-  const [productImage, setProductImage] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
-  // const [description,setDescription] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState(0);
   const [unit, setUnit] = useState(0);
@@ -112,7 +110,7 @@ const AddProduct = () => {
           <Select
             options={categories}
             placeholder="Select Category"
-            onChange={(val: any) => setCategory(val?.value)}
+            onChange={(val: any) => setCategory(val)}
           />
         </div>
 
@@ -121,7 +119,7 @@ const AddProduct = () => {
           <Select
             options={unitOptions}
             placeholder="Select Unit"
-            onChange={(val: any) => setUnit(val?.value)}
+            onChange={(val: any) => setUnit(val)}
           />
         </div>
 

@@ -1,24 +1,31 @@
 import db from '../config/db.js';
 
 export const createProduct = (req, res) => {
-  console.log(req.body);
-  const { name, selling_price, unit_id, brand, category_id } = req.body.productData;
-  const image = req.body.images[0];
-  if (!name || selling_price == null || !unit_id)
-    return res.status(400).json({ error: 'Missing required fields' });
-
   try {
+    const { name, selling_price, unit_id, brand, category_id } = JSON.parse(req.body.productData);
+    const image = req.file?.filename;
+
+    if (!name || selling_price == null || !unit_id) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     const stmt = db.prepare(`
       INSERT INTO products (name, selling_price, unit_id, brand, category_id, image)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
     const result = stmt.run(
-      name, selling_price, unit_id, brand || null, category_id || null, image || null
+      name,
+      selling_price,
+      unit_id,
+      brand || null,
+      category_id || null,
+      image || null
     );
+
     res.status(201).json({ message: 'Product created', id: result.lastInsertRowid });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Failed to create product' });
-    console.log(err);
   }
 };
 
