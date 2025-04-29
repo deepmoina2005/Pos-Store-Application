@@ -6,7 +6,7 @@ interface Unit {
 }
 export const deleteUnitAPI = async (data: Unit) => {
   try {
-    const response = await axios.delete(`http://localhost:4000/unit/${data.id}`);
+    const response = await axios.delete(`http://localhost:3000/unit/${data.id}`);
     return response;
   } catch (error) {
     // Handle error (e.g., network issue or bad response)

@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../slices/authSlice"; // Reducer for authentication
 import addCategoryReducer from "../slices/category/addCategorySlice"; // Reducer for category management
-import addProductReducer from "../slices/addProductSlice";
+import addProductReducer from "../slices/product/addProductSlice";
 import catergoryListReducer from "../slices/category/categoryListSlice"
 import deleteCategoryRedcucer from "../slices/category/deleteCategorySlice" // Reducer for product management
 import addSupplierReducer from "../slices/supplier/addSupplier";

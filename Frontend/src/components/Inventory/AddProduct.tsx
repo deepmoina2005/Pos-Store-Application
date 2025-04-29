@@ -7,80 +7,62 @@ import Input from "../form/input/InputField";
 import Select from "../form/Select";
 import toast from "react-hot-toast";
 import Button from "../ui/button/Button";
-import axios from "axios"; // ✅ Added this
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store/store";
+import { addProductAction } from "../../redux/slices/product/addProductSlice";
+import { ProductData } from "../../services/product/addProductService";
 
 const AddProduct = () => {
-  const [productImage, setProductImage] = useState<File[]>([]);
   const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState("");
-  // const [description,setDescription] = useState("");
-  const [productDiscountPrice, setProductDiscountPrice] = useState("");
+  const [productPrice, setProductPrice] = useState(0);
   const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
-  const [unit, setUnit] = useState("");
+  const [category, setCategory] = useState(0);
+  const [unit, setUnit] = useState(0);
+  const allCategory = useSelector((state: RootState) => state.categoryList.categories);
+  const allUnits = useSelector((state: RootState) => state.unitList.units)
+  const [dropzoneKey, setDropzoneKey] = useState(0);
 
-  const onDrop = (acceptedFiles: File[]) => {
-    setProductImage(acceptedFiles);
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
     accept: {
-      "image/png": [],
-      "image/jpeg": [],
-      "image/webp": [],
-      "image/svg+xml": [],
+      "image/png": [".png"],
+      "image/jpeg": [".jpeg", ".jpg"],
+      "image/webp": [".webp"],
+      "image/svg+xml": [".svg"]
     },
-  });
+    maxFiles: 5,
+    multiple: true,
+    onDropRejected: (files) => {
+      toast.error(`Invalid file type: ${files[0].file.type}. Supported formats: PNG, JPEG, WEBP, SVG`);
+    }
+  }); const dispatch = useDispatch<AppDispatch>()
+  const categories = allCategory.map(category => { return { value: category.id, label: category.name } });
 
-  const categories = [
-    { value: "fruits", label: "Fruits" },
-    { value: "vegetables", label: "Vegetables" },
-    { value: "dairy", label: "Dairy" },
-  ];
-
-  const unitOptions = [
-    { value: "kg", label: "Kilogram (kg)" },
-    { value: "litre", label: "Litre (litre)" },
-    { value: "pcs", label: "Pieces (pcs)" },
-    { value: "pack", label: "Pack" },
-  ];
+  const unitOptions = allUnits.map(unit => { return { value: unit.id, label: unit.name } });
 
   const handleSubmit = async () => {
     // Basic validation
-    if (!productName || !productPrice || !category || !unit || !productImage.length) {
-      toast.error("Please fill all the fields and upload at least one image.");
-      return;
-    }
-
     try {
-      const newProduct = {
-        productName,
+      const newProduct: ProductData = {
+        name: productName,
+        selling_price: productPrice,
+        unit_id: unit,
         brand,
-        category,
-        unit,
-        productPrice,
-        productDiscountPrice,
+        category_id: category,
       };
+      const result = await dispatch(addProductAction({
+        productData: newProduct,
+        images: [...acceptedFiles]
+      }));
 
-      const formData = new FormData();
-      formData.append("productData", JSON.stringify(newProduct));
-      productImage.forEach((file) => formData.append("images", file));
-
-      const { data } = await axios.post("/api/product/add", formData);
-
-      if (data.success) {
-        toast.success(data.message);
+      if (result.payload) {
+        toast.success("Product added successfully");
         // Reset form
         setProductName("");
         setBrand("");
-        setCategory("");
-        setUnit("");
-        setProductImage([]);
-        setProductPrice("");
-        setProductDiscountPrice("");
-      } else {
-        toast.error(data.message);
+        setCategory(0);
+        setUnit(0);
+        setProductPrice(0);
+        setDropzoneKey(prev => prev + 1); // Reset dropzone
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || error.message);
@@ -106,18 +88,11 @@ const AddProduct = () => {
             placeholder="Product Price"
             type="number"
             value={productPrice}
-            onChange={(e) => setProductPrice(e.target.value)}
+            onChange={(e) => setProductPrice(Number(e.target.value))}
           />
         </div>
 
         <div>
-          <Label>Product Discount Price</Label>
-          <Input
-            placeholder="Product Discount Price"
-            type="number"
-            value={productDiscountPrice}
-            onChange={(e) => setProductDiscountPrice(e.target.value)}
-          />
         </div>
 
         <div>
@@ -135,7 +110,7 @@ const AddProduct = () => {
           <Select
             options={categories}
             placeholder="Select Category"
-            onChange={(val: any) => setCategory(val?.value)}
+            onChange={(val: any) => setCategory(val)}
           />
         </div>
 
@@ -144,14 +119,18 @@ const AddProduct = () => {
           <Select
             options={unitOptions}
             placeholder="Select Unit"
-            onChange={(val: any) => setUnit(val?.value)}
+            onChange={(val: any) => setUnit(val)}
           />
         </div>
 
         {/* Dropzone for images */}
+
         <div className="md:col-span-2">
-          <Label>Upload Product Images</Label>
-          <div className="transition border border-gray-300 border-dashed cursor-pointer dark:hover:border-brand-500 dark:border-gray-700 rounded-xl hover:border-brand-500">
+          <Label>Upload Product Images (max 5)</Label>
+          <div
+            key={dropzoneKey}
+            className="transition border border-gray-300 border-dashed cursor-pointer dark:hover:border-brand-500 dark:border-gray-700 rounded-xl hover:border-brand-500"
+          >
             <div
               {...getRootProps()}
               className={`dropzone rounded-xl border-dashed border-gray-300 p-7 lg:p-10
@@ -184,11 +163,28 @@ const AddProduct = () => {
                   {isDragActive ? "Drop Files Here" : "Drag & Drop Files Here"}
                 </h4>
                 <span className="text-center mb-5 block w-full max-w-[290px] text-sm text-gray-700 dark:text-gray-400">
-                  Drag and drop your PNG, JPG, WebP, SVG images here or browse
+                  PNG, JPG, WEBP, SVG (Max 5 files)
                 </span>
               </div>
             </div>
           </div>
+
+          {/* File previews */}
+          {acceptedFiles.length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-sm font-medium mb-2">Selected Files:</h4>
+              <ul className="grid grid-cols-2 gap-2">
+                {acceptedFiles.map((file) => (
+                  <li
+                    key={file.name}
+                    className="text-xs text-gray-600 dark:text-gray-400 truncate"
+                  >
+                    {file.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="md:col-span-2 flex justify-end">
