@@ -32,11 +32,20 @@ export const createProduct = (req, res) => {
 export const getAllProducts = (req, res) => {
   try {
     const products = db.prepare(`SELECT * FROM products`).all();
-    res.json(products);
-  } catch {
+
+    // Assuming your static images are served from /uploads
+    const enhancedProducts = products.map(product => ({
+      ...product,
+      image: product.image ? `/uploads/${product.image}` : null
+    }));
+
+    res.json(enhancedProducts);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 };
+
 
 export const getProductById = (req, res) => {
   const { id } = req.params;

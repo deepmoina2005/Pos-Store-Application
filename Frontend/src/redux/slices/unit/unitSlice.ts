@@ -44,7 +44,7 @@ export const deleteUnitAction = createAsyncThunk(
     "unit/delete",
     async (unit: UnitData, { rejectWithValue }) => {
         try {
-            const response = await deleteUnitAPI(unit);
+            await deleteUnitAPI(unit);
             toast.success("unit deleted successfully.");
             return unit.id;
         } catch (error: any) {
