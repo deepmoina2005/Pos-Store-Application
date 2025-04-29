@@ -12,7 +12,6 @@ import ReactSelect from "react-select";
 
 const AddPurchaseProduct = () => {
   const [supplier, setSupplier] = useState<string>("");
-  const [warehouse, setWarehouse] = useState<string>("");
   const [taxRate, setTaxRate] = useState<number>(0);
   const [shipping, setShipping] = useState<number>(0);
   const [discount, setDiscount] = useState<number>(0);
@@ -60,7 +59,6 @@ const AddPurchaseProduct = () => {
     try {
       const newPurchase = {
         supplier,
-        warehouse,
         taxRate,
         shipping,
         discount,
@@ -80,7 +78,6 @@ const AddPurchaseProduct = () => {
 
         // Reset the form fields after success
         setSupplier("");
-        setWarehouse("");
         setTaxRate(0);
         setShipping(0);
         setDiscount(0);
@@ -189,17 +186,6 @@ const AddPurchaseProduct = () => {
             options={suppliers}
             placeholder="Select Supplier"
             onChange={(val) => setSupplier(val)}
-          />
-        </div>
-
-        {/* Warehouse */}
-        <div>
-          <Label>Warehouse</Label>
-          <Input
-            placeholder="Enter Warehouse"
-            type="text"
-            value={warehouse}
-            onChange={(e) => setWarehouse(e.target.value)}
           />
         </div>
 

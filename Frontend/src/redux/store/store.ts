@@ -33,4 +33,3 @@ export type AppDispatch = typeof store.dispatch;
 
 // Typed useDispatch hook for better TypeScript support
 export const useAppDispatch: () => AppDispatch = useDispatch;
-
