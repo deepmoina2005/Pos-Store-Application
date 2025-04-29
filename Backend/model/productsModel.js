@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT,
   image BLOB,
   selling_price REAL NOT NULL CHECK(selling_price >= 0),
-  cost_price REAL CHECK(cost_price >= 0),
+  cost_price REAL CHECK(cost_price >= 0) DEFAULT 0,
   stock INTEGER NOT NULL CHECK(stock >= 0) DEFAULT 0,
   brand TEXT,
   category_id INTEGER,

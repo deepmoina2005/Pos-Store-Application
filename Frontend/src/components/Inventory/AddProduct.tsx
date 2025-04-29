@@ -14,7 +14,7 @@ import { ProductData } from "../../services/product/addProductService";
 
 const AddProduct = () => {
   const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState(0);
+  const [productPrice, setProductPrice] = useState<number>();
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState(0);
   const [unit, setUnit] = useState(0);
@@ -44,7 +44,7 @@ const AddProduct = () => {
     try {
       const newProduct: ProductData = {
         name: productName,
-        selling_price: productPrice,
+        selling_price: productPrice || 0,
         unit_id: unit,
         brand,
         category_id: category,

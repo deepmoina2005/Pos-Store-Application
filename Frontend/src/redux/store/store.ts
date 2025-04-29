@@ -8,6 +8,7 @@ import addSupplierReducer from "../slices/supplier/addSupplier";
 import supplierListReducer from "../slices/supplier/supplierSlice";
 import unitListReducer from "../slices/unit/unitSlice";
 import addUnitReducer from "../slices/unit/addUnitSlice";
+import productReducer from "../slices/product/productSlice.ts"
 import { useDispatch } from "react-redux";
 
 // Create Redux store
@@ -15,7 +16,8 @@ export const store = configureStore({
   reducer: {
     auth: authReducer, // Authentication state
     addCategory: addCategoryReducer, // Category state
-    addProduct: addProductReducer, // Product state
+    addProduct: addProductReducer,// Product state
+    productList: productReducer,
     categoryList: catergoryListReducer,
     deleteCategory: deleteCategoryRedcucer,
     supplierList: supplierListReducer,

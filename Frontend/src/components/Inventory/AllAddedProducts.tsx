@@ -7,7 +7,7 @@ import {
 } from "../ui/table";
 
 import Badge from "../ui/badge/Badge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit, Trash2, PlusCircle } from "lucide-react";
 import Button from "../ui/button/Button";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,9 @@ import img8 from "../../assets/seven_up_image_1.png";
 import img9 from "../../assets/sprite_image_1.png";
 import img10 from "../../assets/top_ramen_image.png";
 import img11 from "../../assets/yippee_image.png";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store/store";
+import { fetchProductAction } from "../../redux/slices/product/productSlice";
 
 interface Product {
   id: number;
@@ -127,15 +130,19 @@ const tableData: Product[] = [
 
 
 export default function AllAddedProducts() {
-  const [products, setProducts] = useState<Product[]>(tableData);
+  const dispatch = useDispatch<AppDispatch>();
+  const products = useSelector((state: RootState) => state.productList.products)
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 8;
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(fetchProductAction());
+  }, [])
   const handleDelete = (id: number) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    console.log(id);
   };
 
   const handleEdit = (id: number) => {
@@ -209,9 +216,9 @@ export default function AllAddedProducts() {
               <TableRow>
                 <TableCell isHeader className="px-4 py-3">Product Image</TableCell>
                 <TableCell isHeader className="px-4 py-3">Product Name</TableCell>
-                <TableCell isHeader className="px-4 py-3">Barcode</TableCell>
-                <TableCell isHeader className="px-4 py-3">Quantity</TableCell>
-                <TableCell isHeader className="px-4 py-3">Status</TableCell>
+                <TableCell isHeader className="px-4 py-3">Stock</TableCell>
+                <TableCell isHeader className="px-4 py-3">Sell Price</TableCell>
+                <TableCell isHeader className="px-4 py-3">Cost</TableCell>
                 <TableCell isHeader className="px-4 py-3">Actions</TableCell>
               </TableRow>
             </TableHeader>
@@ -219,21 +226,20 @@ export default function AllAddedProducts() {
               {paginatedProducts.map((product) => (
                 <TableRow key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                   <TableCell className="px-4 py-3">
-                    <div className="w-10 h-10 mx-auto overflow-hidden rounded-full flex items-center justify-center">
-                      <img src={product.image} alt={product.name} width={40} height={40} className="object-cover" />
+                    <div className="w-6 h-6 mx-auto overflow-hidden rounded-full flex items-center justify-center">
+                      <img
+                        src={`http://localhost:3000${product.image}`}
+                        alt={product.name}
+                        width={40}
+                        height={40}
+                        className="object-cover"
+                      />
                     </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 font-medium text-gray-900 dark:text-white">{product.name}</TableCell>
-                  <TableCell className="px-4 py-3">{product.barcode}</TableCell>
-                  <TableCell className="px-4 py-3">{product.quantity}</TableCell>
-                  <TableCell className="px-4 py-3">
-                    <Badge
-                      size="sm"
-                      color={product.status === "Active" ? "success" : product.status === "Pending" ? "warning" : "error"}
-                    >
-                      {product.status}
-                    </Badge>
-                  </TableCell>
+                  <TableCell className="px-4 py-3">{product.stock}</TableCell>
+                  <TableCell className="px-4 py-3">{product.selling_price}</TableCell>
+                  <TableCell className="px-4 py-3">{product.cost_price}</TableCell>
                   <TableCell className="px-4 py-3">
                     <div className="flex items-center justify-center gap-3">
                       <button onClick={() => handleEdit(product.id)} className="text-blue-500 hover:text-blue-700" title="Edit">
@@ -271,9 +277,8 @@ export default function AllAddedProducts() {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-9 h-9 rounded-md ${
-                  currentPage === page ? "bg-indigo-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
+                className={`w-9 h-9 rounded-md ${currentPage === page ? "bg-indigo-500 text-white" : "hover:bg-gray-200 dark:hover:bg-gray-700"
+                  }`}
               >
                 {page}
               </button>
