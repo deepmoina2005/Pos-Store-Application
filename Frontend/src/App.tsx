@@ -29,7 +29,6 @@ import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
 
 // Pages - Utilities
-import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
 
 // Pages - Tables & Forms
@@ -73,7 +72,6 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route index path="/dashboard" element={<Home />} />
           <Route path="/profile" element={<UserProfiles />} />
-          <Route path="/calendar" element={<Calendar />} />
           <Route path="/settings" element={<Settings />} />
 
           {/* UI Elements */}
