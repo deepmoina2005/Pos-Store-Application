@@ -1,24 +1,31 @@
 import db from '../config/db.js';
 
 export const createProduct = (req, res) => {
-  const { name, description, selling_price, cost_price, stock, unit_of_measure, brand, category_id } = req.body;
-
-  if (!name || selling_price == null || stock == null || !unit_of_measure)
-    return res.status(400).json({ error: 'Missing required fields' });
-
   try {
+    const { name, selling_price, unit_id, brand, category_id } = JSON.parse(req.body.productData);
+    const image = req.file?.filename;
+
+    if (!name || selling_price == null || !unit_id) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     const stmt = db.prepare(`
-      INSERT INTO products (name, description, selling_price, cost_price, stock, unit_of_measure, brand, category_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO products (name, selling_price, unit_id, brand, category_id, image)
+      VALUES (?, ?, ?, ?, ?, ?)
     `);
     const result = stmt.run(
-      name, description || null, selling_price, cost_price || 0,
-      stock, unit_of_measure, brand || null, category_id || null
+      name,
+      selling_price,
+      unit_id,
+      brand || null,
+      category_id || null,
+      image || null
     );
+
     res.status(201).json({ message: 'Product created', id: result.lastInsertRowid });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: 'Failed to create product' });
-    console.log(err);    
   }
 };
 
@@ -39,14 +46,14 @@ export const getProductById = (req, res) => {
 
 export const updateProduct = (req, res) => {
   const { id } = req.params;
-  const { name, description, selling_price, cost_price, stock, unit_of_measure, brand, category_id } = req.body;
+  const { name, selling_price, cost_price, stock, unit_of_measure, brand, category_id } = req.body;
 
   try {
     db.prepare(`
       UPDATE products
-      SET name = ?, description = ?, selling_price = ?, cost_price = ?, stock = ?, unit_of_measure = ?, brand = ?, category_id = ?, updated_at = CURRENT_TIMESTAMP
+      SET name = ?, selling_price = ?, cost_price = ?, stock = ?, unit_of_measure = ?, brand = ?, category_id = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
-    `).run(name, description, selling_price, cost_price, stock, unit_of_measure, brand, category_id, id);
+    `).run(name, selling_price, cost_price, stock, unit_of_measure, brand, category_id, id);
 
     res.json({ message: 'Product updated' });
   } catch {
