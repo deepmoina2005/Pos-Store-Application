@@ -14,7 +14,7 @@ const NewUnitsAdd = () => {
   const [unitName, setUnitName] = useState("");
   const [pcs, setPcs] = useState("");
 
-  const { isLoading, isSuccess } = useSelector((state: RootState) => state.addUnit);
+  const { isSuccess } = useSelector((state: RootState) => state.addUnit);
   const handleSubmit = async () => {
 
     try {
@@ -38,7 +38,7 @@ const NewUnitsAdd = () => {
   };
   useEffect(() => {
     if (isSuccess) {
-      dispatch(resetAddCategoryState()); // Reset success state after navigation
+      dispatch(resetAddCategoryState())
     }
   }, [isSuccess, dispatch]);
   return (

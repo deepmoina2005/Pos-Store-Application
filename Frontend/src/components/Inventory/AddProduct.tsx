@@ -93,9 +93,6 @@ const AddProduct = () => {
         </div>
 
         <div>
-        </div>
-
-        <div>
           <Label>Brand</Label>
           <Input
             placeholder="Brand"
