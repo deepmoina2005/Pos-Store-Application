@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import {
   Table,
@@ -33,7 +34,7 @@ const AllHistorySuppliers = () => {
 
   useEffect(()=>{
     dispatch(fetchSupplierAction());
-  },[]);
+  },[dispatch]);
   
   const filteredSuppliers = suppliers.filter((supplier) =>
     supplier.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -43,24 +44,6 @@ const AllHistorySuppliers = () => {
   const paginatedSuppliers = filteredSuppliers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
-  );
-
-  const ToggleSwitch = ({
-    checked,
-    onChange,
-  }: {
-    checked: boolean;
-    onChange: () => void;
-  }) => (
-    <label className="relative inline-flex cursor-pointer items-center">
-      <input
-        type="checkbox"
-        className="sr-only peer"
-        checked={checked}
-        onChange={onChange}
-      />
-      <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-indigo-600 transition-colors duration-300 ease-in-out after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:duration-300 peer-checked:after:translate-x-5"></div>
-    </label>
   );
 
   const handleDelete =async (supplier: SupplierData) => {
@@ -110,6 +93,7 @@ const AllHistorySuppliers = () => {
           </TableHeader>
 
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             {paginatedSuppliers.map((supplier:any) => (
               <TableRow key={supplier.id}>
                 <TableCell className="px-5 py-4 text-start">

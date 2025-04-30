@@ -61,6 +61,8 @@ import AllUnits from "./pages/Units/AllUnits";
 // Pages - Misc
 import NotFound from "./pages/OtherPage/NotFound";
 import SalesReports from "./pages/Reports/SalesReports";
+import InventoryReports from "./pages/Reports/InventoryReports";
+import StockReports from "./pages/Reports/StockReports";
 
 export default function App() {
   return (
@@ -115,6 +117,8 @@ export default function App() {
 
           {/* Reports */}
           <Route path="/sales-reports" element={<SalesReports/>}/>
+          <Route path="/purchase-reports" element={<InventoryReports/>}/>
+          <Route path="/inventory-reports" element={<StockReports/>}/>
         </Route>
 
         {/* Auth route */}
