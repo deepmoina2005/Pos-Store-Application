@@ -48,11 +48,11 @@ export const fetchProductAction = createAsyncThunk(
 // ✅ DELETE
 export const deleteProductAction = createAsyncThunk(
     "product/delete",
-    async (product: ProductData, { rejectWithValue }) => {
+    async (product_id: number, { rejectWithValue }) => {
         try {
-            await deleteProductAPI(product.id);
+            await deleteProductAPI(product_id);
             toast.success("Product deleted successfully.");
-            return product.id;
+            return product_id;
         } catch (error: any) {
             toast.error(error.response?.data?.message || "Failed to delete product.");
             return rejectWithValue(error.response?.data);
