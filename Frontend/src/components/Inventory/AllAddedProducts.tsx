@@ -12,7 +12,7 @@ import Button from "../ui/button/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
-import { fetchProductAction } from "../../redux/slices/product/productSlice";
+import { deleteProductAction, fetchProductAction } from "../../redux/slices/product/productSlice";
 
 export default function AllAddedProducts() {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +27,7 @@ export default function AllAddedProducts() {
     dispatch(fetchProductAction());
   }, [])
   const handleDelete = (id: number) => {
-    console.log(id);
+    dispatch(deleteProductAction(id));
   };
 
 
@@ -54,7 +54,7 @@ export default function AllAddedProducts() {
           <form className="flex gap-2">
             <div className="relative">
               <span className="absolute -translate-y-1/2 pointer-events-none left-3 mt-5.5">
-                <Search className="w-5 h-5"/>
+                <Search className="w-5 h-5" />
               </span>
               <input
                 type="text"

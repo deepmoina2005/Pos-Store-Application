@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import ComponentCard from "../common/ComponentCard";
 import Label from "../form/Label";
@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store/store";
 import { addProductAction } from "../../redux/slices/product/addProductSlice";
 import { ProductData } from "../../services/product/addProductService";
+import { fetchUnitAction } from "../../redux/slices/unit/unitSlice";
+import { fetchCategoryAction } from "../../redux/slices/category/categoryListSlice";
 
 const AddProduct = () => {
   const [productName, setProductName] = useState("");
@@ -35,6 +37,11 @@ const AddProduct = () => {
       toast.error(`Invalid file type: ${files[0].file.type}. Supported formats: PNG, JPEG, WEBP, SVG`);
     }
   }); const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    dispatch(fetchUnitAction());
+    dispatch(fetchCategoryAction());
+  }, [])
   const categories = allCategory.map(category => { return { value: category.id, label: category.name } });
 
   const unitOptions = allUnits.map(unit => { return { value: unit.id, label: unit.name } });
